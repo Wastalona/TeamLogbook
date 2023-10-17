@@ -38,9 +38,9 @@
 			this.btn_progress = new System.Windows.Forms.Button();
 			this.btn_pass = new System.Windows.Forms.Button();
 			this.btn_report = new System.Windows.Forms.Button();
-			this.comboBox3 = new System.Windows.Forms.ComboBox();
-			this.comboBox2 = new System.Windows.Forms.ComboBox();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.subject_fl = new System.Windows.Forms.ComboBox();
+			this.student_fl = new System.Windows.Forms.ComboBox();
+			this.group_fl = new System.Windows.Forms.ComboBox();
 			this.fotter = new System.Windows.Forms.Panel();
 			this.license_lb = new System.Windows.Forms.Label();
 			this.version_lb = new System.Windows.Forms.Label();
@@ -180,46 +180,46 @@
 			this.btn_report.UseVisualStyleBackColor = false;
 			this.btn_report.Click += new System.EventHandler(this.btn_report_Click);
 			// 
-			// comboBox3
+			// subject_fl
 			// 
-			this.comboBox3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.comboBox3.Enabled = false;
-			this.comboBox3.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.comboBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.comboBox3.FormattingEnabled = true;
-			this.comboBox3.Location = new System.Drawing.Point(8, 93);
-			this.comboBox3.Name = "comboBox3";
-			this.comboBox3.Size = new System.Drawing.Size(207, 36);
-			this.comboBox3.TabIndex = 3;
-			this.comboBox3.Text = "Предмет";
+			this.subject_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.subject_fl.Enabled = false;
+			this.subject_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.subject_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.subject_fl.FormattingEnabled = true;
+			this.subject_fl.Location = new System.Drawing.Point(8, 93);
+			this.subject_fl.Name = "subject_fl";
+			this.subject_fl.Size = new System.Drawing.Size(207, 36);
+			this.subject_fl.TabIndex = 3;
+			this.subject_fl.Text = "Предмет";
 			// 
-			// comboBox2
+			// student_fl
 			// 
-			this.comboBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.comboBox2.Enabled = false;
-			this.comboBox2.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.comboBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.comboBox2.FormattingEnabled = true;
-			this.comboBox2.Items.AddRange(new object[] {
+			this.student_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.student_fl.Enabled = false;
+			this.student_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.student_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.student_fl.FormattingEnabled = true;
+			this.student_fl.Items.AddRange(new object[] {
             "Учащийся"});
-			this.comboBox2.Location = new System.Drawing.Point(8, 51);
-			this.comboBox2.Name = "comboBox2";
-			this.comboBox2.Size = new System.Drawing.Size(207, 36);
-			this.comboBox2.TabIndex = 2;
-			this.comboBox2.Text = "Учащийся";
+			this.student_fl.Location = new System.Drawing.Point(8, 51);
+			this.student_fl.Name = "student_fl";
+			this.student_fl.Size = new System.Drawing.Size(207, 36);
+			this.student_fl.TabIndex = 2;
+			this.student_fl.Text = "Учащийся";
 			// 
-			// comboBox1
+			// group_fl
 			// 
-			this.comboBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.comboBox1.Enabled = false;
-			this.comboBox1.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.comboBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(8, 9);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(207, 36);
-			this.comboBox1.TabIndex = 1;
-			this.comboBox1.Text = "Группа";
+			this.group_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.group_fl.Enabled = false;
+			this.group_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.group_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.group_fl.FormattingEnabled = true;
+			this.group_fl.Location = new System.Drawing.Point(8, 9);
+			this.group_fl.Name = "group_fl";
+			this.group_fl.Size = new System.Drawing.Size(207, 36);
+			this.group_fl.TabIndex = 1;
+			this.group_fl.Text = "Группа";
 			// 
 			// fotter
 			// 
@@ -258,9 +258,9 @@
 			// filter_panel
 			// 
 			this.filter_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
-			this.filter_panel.Controls.Add(this.comboBox3);
-			this.filter_panel.Controls.Add(this.comboBox1);
-			this.filter_panel.Controls.Add(this.comboBox2);
+			this.filter_panel.Controls.Add(this.subject_fl);
+			this.filter_panel.Controls.Add(this.group_fl);
+			this.filter_panel.Controls.Add(this.student_fl);
 			this.filter_panel.Location = new System.Drawing.Point(12, 99);
 			this.filter_panel.Name = "filter_panel";
 			this.filter_panel.Size = new System.Drawing.Size(223, 138);
@@ -418,9 +418,9 @@
         private System.Windows.Forms.Button btn_progress;
         private System.Windows.Forms.Button btn_pass;
         private System.Windows.Forms.Button btn_report;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox subject_fl;
+        private System.Windows.Forms.ComboBox student_fl;
+        private System.Windows.Forms.ComboBox group_fl;
 		private System.Windows.Forms.Label head_lb;
 		private System.Windows.Forms.PictureBox icon;
 		private System.Windows.Forms.Label license_lb;

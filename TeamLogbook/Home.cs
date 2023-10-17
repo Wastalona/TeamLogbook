@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
 
@@ -20,15 +14,6 @@ namespace TeamLogbook
         {
             InitializeComponent();
         }
-
-		public static string HashPassword(string password)
-		{
-			using (SHA256 sha256 = SHA256.Create())
-			{
-				byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-				return Convert.ToBase64String(hashedBytes);
-			}
-		}
 
 		private void PanelForm(Form fm)
 		{
@@ -47,6 +32,7 @@ namespace TeamLogbook
 
 		private void Home_Load(object sender, EventArgs e)
 		{
+			/*
 			if (use_local_password)
 			{
 				//hide_all();
@@ -55,39 +41,61 @@ namespace TeamLogbook
 				auth_form.Show();
 				PanelForm(new Auth(local_password, this));
 			}
+			*/
+
 			PanelForm(new Main());
+		}
+
+		private void filters_panel(bool is_active)
+		{
+			if (is_active)
+			{
+				group_fl.Enabled = true;
+				subject_fl.Enabled = true;
+				student_fl.Enabled = true;
+			}
+			else
+			{
+				group_fl.Enabled = false;
+				subject_fl.Enabled = false;
+				student_fl.Enabled = false;
+			}
 		}
 
 		// Кнопки меню
 		private void btn_main_Click(object sender, EventArgs e)
 		{
 			PanelForm(new Main());
+			filters_panel(false);
 		}
 
 		private void btn_log_Click(object sender, EventArgs e)
 		{
 			PanelForm(new Log());
+			filters_panel(true);
 		}
 
 		private void btn_progress_Click(object sender, EventArgs e)
 		{
 			PanelForm(new Progress());
+			filters_panel(true);
 		}
 
 		private void btn_pass_Click(object sender, EventArgs e)
 		{
 			PanelForm(new Miss());
+			filters_panel(true);
 		}
 
 		private void btn_report_Click(object sender, EventArgs e)
 		{
 			PanelForm(new Report());
+			filters_panel(false);
 		}
 
 		// Функциональные кнопки
 		private void btn_settings_Click(object sender, EventArgs e)
 		{
-			control_panel.Hide();
 		}
 
 		private void btn_load_Click_1(object sender, EventArgs e)
@@ -108,7 +116,7 @@ namespace TeamLogbook
 
 		private void btn_clear_all_Click(object sender, EventArgs e)
 		{
-
+			MessageBox.Show("Вы действительно хотите очистить форму?");
 		}
 	}
 }
