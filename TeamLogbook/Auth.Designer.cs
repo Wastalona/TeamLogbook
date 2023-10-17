@@ -114,6 +114,7 @@
 			this.Name = "Auth";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Авторизация";
+			this.Load += new System.EventHandler(this.Auth_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

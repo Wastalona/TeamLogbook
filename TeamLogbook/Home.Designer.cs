@@ -46,11 +46,12 @@
 			this.version_lb = new System.Windows.Forms.Label();
 			this.filter_panel = new System.Windows.Forms.Panel();
 			this.body = new System.Windows.Forms.Panel();
-			this.info_lb = new System.Windows.Forms.Label();
+			this.form_panel = new System.Windows.Forms.Panel();
 			this.control_panel = new System.Windows.Forms.Panel();
 			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
 			this.btn_load = new System.Windows.Forms.Button();
-			this.button1 = new System.Windows.Forms.Button();
+			this.btn_save = new System.Windows.Forms.Button();
+			this.btn_change_format = new System.Windows.Forms.Button();
 			this.btn_clear_all = new System.Windows.Forms.Button();
 			this.btn_settings = new System.Windows.Forms.Button();
 			this.header.SuspendLayout();
@@ -121,6 +122,7 @@
 			this.btn_main.TabIndex = 0;
 			this.btn_main.Text = "Главная";
 			this.btn_main.UseVisualStyleBackColor = false;
+			this.btn_main.Click += new System.EventHandler(this.btn_main_Click);
 			// 
 			// btn_log
 			// 
@@ -134,6 +136,7 @@
 			this.btn_log.TabIndex = 1;
 			this.btn_log.Text = "Журнал";
 			this.btn_log.UseVisualStyleBackColor = false;
+			this.btn_log.Click += new System.EventHandler(this.btn_log_Click);
 			// 
 			// btn_progress
 			// 
@@ -147,6 +150,7 @@
 			this.btn_progress.TabIndex = 2;
 			this.btn_progress.Text = "Успеваемость";
 			this.btn_progress.UseVisualStyleBackColor = false;
+			this.btn_progress.Click += new System.EventHandler(this.btn_progress_Click);
 			// 
 			// btn_pass
 			// 
@@ -160,6 +164,7 @@
 			this.btn_pass.TabIndex = 3;
 			this.btn_pass.Text = "Пропуски";
 			this.btn_pass.UseVisualStyleBackColor = false;
+			this.btn_pass.Click += new System.EventHandler(this.btn_pass_Click);
 			// 
 			// btn_report
 			// 
@@ -173,6 +178,7 @@
 			this.btn_report.TabIndex = 4;
 			this.btn_report.Text = "Отчёт";
 			this.btn_report.UseVisualStyleBackColor = false;
+			this.btn_report.Click += new System.EventHandler(this.btn_report_Click);
 			// 
 			// comboBox3
 			// 
@@ -263,23 +269,18 @@
 			// body
 			// 
 			this.body.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
-			this.body.Controls.Add(this.info_lb);
+			this.body.Controls.Add(this.form_panel);
 			this.body.Location = new System.Drawing.Point(241, 99);
 			this.body.Name = "body";
 			this.body.Size = new System.Drawing.Size(1011, 518);
 			this.body.TabIndex = 2;
 			// 
-			// info_lb
+			// form_panel
 			// 
-			this.info_lb.AutoSize = true;
-			this.info_lb.BackColor = System.Drawing.Color.Transparent;
-			this.info_lb.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 24F, System.Drawing.FontStyle.Bold);
-			this.info_lb.ForeColor = System.Drawing.Color.Black;
-			this.info_lb.Location = new System.Drawing.Point(263, 199);
-			this.info_lb.Name = "info_lb";
-			this.info_lb.Size = new System.Drawing.Size(513, 86);
-			this.info_lb.TabIndex = 2;
-			this.info_lb.Text = "Здесь отображается список \r\nучащихся, групп, предметов";
+			this.form_panel.Location = new System.Drawing.Point(3, 3);
+			this.form_panel.Name = "form_panel";
+			this.form_panel.Size = new System.Drawing.Size(1003, 512);
+			this.form_panel.TabIndex = 3;
 			// 
 			// control_panel
 			// 
@@ -293,7 +294,8 @@
 			// flowLayoutPanel1
 			// 
 			this.flowLayoutPanel1.Controls.Add(this.btn_load);
-			this.flowLayoutPanel1.Controls.Add(this.button1);
+			this.flowLayoutPanel1.Controls.Add(this.btn_save);
+			this.flowLayoutPanel1.Controls.Add(this.btn_change_format);
 			this.flowLayoutPanel1.Controls.Add(this.btn_clear_all);
 			this.flowLayoutPanel1.Controls.Add(this.btn_settings);
 			this.flowLayoutPanel1.Location = new System.Drawing.Point(11, 12);
@@ -310,23 +312,38 @@
 			this.btn_load.Location = new System.Drawing.Point(3, 3);
 			this.btn_load.Name = "btn_load";
 			this.btn_load.Size = new System.Drawing.Size(197, 60);
-			this.btn_load.TabIndex = 1;
+			this.btn_load.TabIndex = 5;
 			this.btn_load.Text = "Загрузить файл";
 			this.btn_load.UseVisualStyleBackColor = false;
-			this.btn_load.Click += new System.EventHandler(this.btn_load_Click);
+			this.btn_load.Click += new System.EventHandler(this.btn_load_Click_1);
 			// 
-			// button1
+			// btn_save
 			// 
-			this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.button1.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.button1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.button1.Location = new System.Drawing.Point(3, 69);
-			this.button1.Name = "button1";
-			this.button1.Size = new System.Drawing.Size(197, 60);
-			this.button1.TabIndex = 3;
-			this.button1.Text = "Изменить формат";
-			this.button1.UseVisualStyleBackColor = false;
+			this.btn_save.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.btn_save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_save.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btn_save.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.btn_save.Location = new System.Drawing.Point(3, 69);
+			this.btn_save.Name = "btn_save";
+			this.btn_save.Size = new System.Drawing.Size(197, 60);
+			this.btn_save.TabIndex = 1;
+			this.btn_save.Text = "Сохранить файл";
+			this.btn_save.UseVisualStyleBackColor = false;
+			this.btn_save.Click += new System.EventHandler(this.btn_load_Click);
+			// 
+			// btn_change_format
+			// 
+			this.btn_change_format.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.btn_change_format.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_change_format.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btn_change_format.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.btn_change_format.Location = new System.Drawing.Point(3, 135);
+			this.btn_change_format.Name = "btn_change_format";
+			this.btn_change_format.Size = new System.Drawing.Size(197, 60);
+			this.btn_change_format.TabIndex = 3;
+			this.btn_change_format.Text = "Изменить формат";
+			this.btn_change_format.UseVisualStyleBackColor = false;
+			this.btn_change_format.Click += new System.EventHandler(this.btn_change_format_Click);
 			// 
 			// btn_clear_all
 			// 
@@ -334,12 +351,13 @@
 			this.btn_clear_all.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btn_clear_all.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.btn_clear_all.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_clear_all.Location = new System.Drawing.Point(3, 135);
+			this.btn_clear_all.Location = new System.Drawing.Point(3, 201);
 			this.btn_clear_all.Name = "btn_clear_all";
 			this.btn_clear_all.Size = new System.Drawing.Size(197, 60);
 			this.btn_clear_all.TabIndex = 2;
 			this.btn_clear_all.Text = "Очистить всё";
 			this.btn_clear_all.UseVisualStyleBackColor = false;
+			this.btn_clear_all.Click += new System.EventHandler(this.btn_clear_all_Click);
 			// 
 			// btn_settings
 			// 
@@ -347,12 +365,13 @@
 			this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btn_settings.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.btn_settings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_settings.Location = new System.Drawing.Point(3, 201);
+			this.btn_settings.Location = new System.Drawing.Point(3, 267);
 			this.btn_settings.Name = "btn_settings";
 			this.btn_settings.Size = new System.Drawing.Size(197, 60);
 			this.btn_settings.TabIndex = 4;
 			this.btn_settings.Text = "Настройки";
 			this.btn_settings.UseVisualStyleBackColor = false;
+			this.btn_settings.Click += new System.EventHandler(this.btn_settings_Click);
 			// 
 			// Home
 			// 
@@ -380,7 +399,6 @@
 			this.fotter.PerformLayout();
 			this.filter_panel.ResumeLayout(false);
 			this.body.ResumeLayout(false);
-			this.body.PerformLayout();
 			this.control_panel.ResumeLayout(false);
 			this.flowLayoutPanel1.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -407,12 +425,13 @@
 		private System.Windows.Forms.PictureBox icon;
 		private System.Windows.Forms.Label license_lb;
 		private System.Windows.Forms.Panel control_panel;
-		private System.Windows.Forms.Label info_lb;
 		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-		private System.Windows.Forms.Button btn_load;
+		private System.Windows.Forms.Button btn_save;
 		private System.Windows.Forms.Button btn_clear_all;
-		private System.Windows.Forms.Button button1;
+		private System.Windows.Forms.Button btn_change_format;
 		private System.Windows.Forms.Button btn_settings;
+		private System.Windows.Forms.Button btn_load;
+		private System.Windows.Forms.Panel form_panel;
 	}
 }
 
