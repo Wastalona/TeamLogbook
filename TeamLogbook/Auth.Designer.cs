@@ -34,6 +34,7 @@
 			this.password_box = new System.Windows.Forms.TextBox();
 			this.label1 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
+			this.lb_error = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// head_lb
@@ -98,11 +99,24 @@
 			this.label2.Text = "выйти";
 			this.label2.Click += new System.EventHandler(this.label2_Click);
 			// 
+			// lb_error
+			// 
+			this.lb_error.AutoSize = true;
+			this.lb_error.BackColor = System.Drawing.Color.Transparent;
+			this.lb_error.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 12F, System.Drawing.FontStyle.Bold);
+			this.lb_error.ForeColor = System.Drawing.Color.Red;
+			this.lb_error.Location = new System.Drawing.Point(541, 9);
+			this.lb_error.Name = "lb_error";
+			this.lb_error.Size = new System.Drawing.Size(145, 21);
+			this.lb_error.TabIndex = 7;
+			this.lb_error.Text = "Неверный пароль";
+			// 
 			// Auth
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1264, 681);
+			this.Controls.Add(this.lb_error);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.password_box);
@@ -114,6 +128,7 @@
 			this.Name = "Auth";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Авторизация";
+			this.Load += new System.EventHandler(this.Auth_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -126,5 +141,6 @@
 		private System.Windows.Forms.TextBox password_box;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label lb_error;
 	}
 }

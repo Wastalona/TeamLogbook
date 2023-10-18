@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.OleDb;
+using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -11,7 +13,10 @@ namespace TeamLogbook
 		private static string connectString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=..\\..\\database.mdb";
 		private OleDbConnection myConnection = new OleDbConnection(connectString);
 
-		public static string HashPassword(string password)
+		public string HashPassword(string password)
+		/*
+			Хэширование пароля 
+		*/
 		{
 			using (SHA256 sha256 = SHA256.Create())
 			{
@@ -21,16 +26,25 @@ namespace TeamLogbook
 		}
 
 		public void openConnection()
+		/*
+			Открытие соединения
+		*/
 		{
 			myConnection.Open();
 		}
 
 		public void closeConnection()
+		/*
+			Закрытие соединения
+		*/
 		{
 			myConnection.Close();
 		}
 
 		public bool isLocalSecure()
+		/*
+			Проверяет наличие локального пароля
+		*/
 		{
 			openConnection();
 			try
@@ -60,6 +74,9 @@ namespace TeamLogbook
 		}
 
 		public bool CheckPassword(string password)
+		/*
+			Проверка пароля
+		*/
 		{
 			if (password.Length == 4)
 			{
@@ -69,7 +86,7 @@ namespace TeamLogbook
 
 				try
 				{
-					using (OleDbCommand dbCmd = new OleDbCommand("SELECT Password FROM Config WHERE id=1;", myConnection))
+					using (OleDbCommand dbCmd = new OleDbCommand("SELECT PasswordHash FROM Config WHERE id=1;", myConnection))
 					{
 						// Выполняем запрос
 						object result = dbCmd.ExecuteScalar();
@@ -105,22 +122,96 @@ namespace TeamLogbook
 			return false;
 		}
 
-		public void SaveAutosavesSettings(bool isActive, string path)
+		public void SaveAutosavesSettings(bool isActive, string path, string interval)
+		/*
+			Сохранение данных об автосохранениях с формы "Настройки"
+		*/
 		{
 			if (string.IsNullOrEmpty(path))
-				path = ".\\autosaves";
+				path = ".\\autosaves\\";
+
+			if (string.IsNullOrEmpty(interval) || (Int32.Parse(interval) < 0 && Int32.Parse(interval) > 120))
+				path = "15";
 
 			openConnection();
 
 			try
 			{
-				OleDbCommand dbCmd = new OleDbCommand("UPDATE Config SET Autosaves = @Autosaves, SavePath = @SavePath WHERE id=1", myConnection);
+				OleDbCommand dbCmd = new OleDbCommand("UPDATE Config SET Autosaves = ?, SavePath = ?, Range = ? WHERE id=1", myConnection);
 				dbCmd.Parameters.AddWithValue("@Autosaves", isActive);
 				dbCmd.Parameters.AddWithValue("@SavePath", path);
+				dbCmd.Parameters.AddWithValue("@Range", interval);
 				dbCmd.ExecuteNonQuery();
+				MessageBox.Show("Настройки сохранены", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
-			catch (Exception ex) { MessageBox.Show("Произошла ошибка при сохранении настроек: " + ex.Message); }
-			finally { closeConnection(); }
+			catch (Exception ex)
+			{
+				MessageBox.Show("Произошла ошибка при сохранении настроек: " + ex.Message, "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				closeConnection();
+			}
+		}
+
+		public string[] GetConfigData()
+		/*
+			Получение всех данных из бд об автосохранениях и паролях
+		*/
+		{
+			List<string> retrievedValues = new List<string>();
+
+			openConnection();
+
+			try
+			{
+				OleDbCommand dbCmd = new OleDbCommand("SELECT * FROM Config WHERE id=1", myConnection);
+				OleDbDataReader reader = dbCmd.ExecuteReader();
+
+				if (reader.Read())
+				{
+					// Обработка полученных значений
+					for (int i = 0; i < reader.FieldCount; i++)
+					{
+						string value = reader[i].ToString();
+						retrievedValues.Add(value);
+					}
+				}
+				else
+					MessageBox.Show("Нет данных", "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+				reader.Close();
+			}
+			catch (Exception ex){ MessageBox.Show("Произошла ошибка загрузке формы: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);}
+			finally{ closeConnection(); }
+
+			return retrievedValues.ToArray();
+		}
+
+		public void SaveNewPassword(string password)
+		{
+			if (!string.IsNullOrEmpty(password))
+			{
+				openConnection();
+
+				try
+				{
+					OleDbCommand dbCmd = new OleDbCommand("UPDATE Config SET PasswordHash = ? WHERE id=1", myConnection);
+					dbCmd.Parameters.AddWithValue("@Password", password);
+					dbCmd.ExecuteNonQuery();
+					MessageBox.Show("Настройки сохранены", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
+				catch (Exception ex)
+				{
+					MessageBox.Show("Произошла ошибка при сохранении нового пароля: " + ex.Message, "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				}
+				finally
+				{
+					closeConnection();
+				}
+			}
+			else
+				MessageBox.Show("Ошибка при записи пароля", "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 	}
 }

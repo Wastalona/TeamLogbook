@@ -34,12 +34,19 @@ namespace TeamLogbook
 				OnAuthenticated();
 				this.Close();
 			}
+			else
+				lb_error.Show();
 			password_box.Text = "";
 		}
 
 		private void label2_Click(object sender, EventArgs e)
 		{
 			Application.Exit();
+		}
+
+		private void Auth_Load(object sender, EventArgs e)
+		{
+			lb_error.Hide();
 		}
 	}
 }

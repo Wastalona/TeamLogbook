@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TeamLogbook
 {
@@ -102,12 +103,18 @@ namespace TeamLogbook
 
 		private void btn_load_Click_1(object sender, EventArgs e)
 		{
+			if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
+				return;
 
+			string filename = openFileDialog1.FileName; // получаем выбранный файл
+			//string fileText = System.IO.File.ReadAllText(filename); // читаем файл в строку
+			//textBox1.Text = fileText;
+			MessageBox.Show("Файл успешно открыт", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		private void btn_load_Click(object sender, EventArgs e)
 		{
-
+			
 		}
 
 
@@ -118,7 +125,7 @@ namespace TeamLogbook
 
 		private void btn_clear_all_Click(object sender, EventArgs e)
 		{
-			MessageBox.Show("Вы действительно хотите очистить форму?");
+			MessageBox.Show("Вы действительно хотите очистить все не сохранённые данные?");
 		}
 	}
 }

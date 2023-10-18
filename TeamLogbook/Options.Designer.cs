@@ -48,6 +48,7 @@
 			this.box_save_path = new System.Windows.Forms.TextBox();
 			this.lb_path = new System.Windows.Forms.Label();
 			this.panel_autosaves = new System.Windows.Forms.Panel();
+			this.lb_req_range = new System.Windows.Forms.Label();
 			this.is_autosaves = new System.Windows.Forms.CheckBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -70,6 +71,7 @@
 			this.btn_change_pass.TabIndex = 0;
 			this.btn_change_pass.Text = "Сменить пароль";
 			this.btn_change_pass.UseVisualStyleBackColor = false;
+			this.btn_change_pass.Click += new System.EventHandler(this.btn_change_pass_Click);
 			// 
 			// Security_header
 			// 
@@ -271,6 +273,7 @@
 			// panel_autosaves
 			// 
 			this.panel_autosaves.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(246)))), ((int)(((byte)(244)))));
+			this.panel_autosaves.Controls.Add(this.lb_req_range);
 			this.panel_autosaves.Controls.Add(this.is_autosaves);
 			this.panel_autosaves.Controls.Add(this.lb_range);
 			this.panel_autosaves.Controls.Add(this.btn_save);
@@ -283,6 +286,17 @@
 			this.panel_autosaves.Size = new System.Drawing.Size(487, 251);
 			this.panel_autosaves.TabIndex = 19;
 			// 
+			// lb_req_range
+			// 
+			this.lb_req_range.AutoSize = true;
+			this.lb_req_range.Enabled = false;
+			this.lb_req_range.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold);
+			this.lb_req_range.Location = new System.Drawing.Point(128, 82);
+			this.lb_req_range.Name = "lb_req_range";
+			this.lb_req_range.Size = new System.Drawing.Size(276, 28);
+			this.lb_req_range.TabIndex = 22;
+			this.lb_req_range.Text = "( 0 < значение <= 120)";
+			// 
 			// is_autosaves
 			// 
 			this.is_autosaves.AutoSize = true;
@@ -293,7 +307,7 @@
 			this.is_autosaves.TabIndex = 21;
 			this.is_autosaves.Text = "Включить автосохранения";
 			this.is_autosaves.UseVisualStyleBackColor = true;
-			this.is_autosaves.Click += new System.EventHandler(this.Options_Load);
+			this.is_autosaves.Click += new System.EventHandler(this.UpdateAutosavesBlock);
 			// 
 			// label2
 			// 
@@ -313,7 +327,7 @@
 			// folderBrowserDialog1
 			// 
 			this.folderBrowserDialog1.Description = "Выберите папку, в которую будут загружаться автосохранения";
-			this.folderBrowserDialog1.SelectedPath = ".\\autosaves";
+			this.folderBrowserDialog1.SelectedPath = ".\\autosaves\\";
 			// 
 			// btn_browse
 			// 
@@ -381,5 +395,6 @@
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
 		private System.Windows.Forms.Button btn_browse;
+		private System.Windows.Forms.Label lb_req_range;
 	}
 }

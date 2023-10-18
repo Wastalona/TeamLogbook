@@ -54,6 +54,8 @@
 			this.btn_change_format = new System.Windows.Forms.Button();
 			this.btn_clear_all = new System.Windows.Forms.Button();
 			this.btn_settings = new System.Windows.Forms.Button();
+			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.header.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.icon)).BeginInit();
 			this.menu.SuspendLayout();
@@ -373,6 +375,10 @@
 			this.btn_settings.UseVisualStyleBackColor = false;
 			this.btn_settings.Click += new System.EventHandler(this.btn_settings_Click);
 			// 
+			// openFileDialog1
+			// 
+			this.openFileDialog1.FileName = "openFileDialog1";
+			// 
 			// Home
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -432,6 +438,8 @@
 		private System.Windows.Forms.Button btn_settings;
 		private System.Windows.Forms.Button btn_load;
 		private System.Windows.Forms.Panel form_panel;
+		private System.Windows.Forms.OpenFileDialog openFileDialog1;
+		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 	}
 }
 
