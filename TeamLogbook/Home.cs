@@ -96,6 +96,8 @@ namespace TeamLogbook
 		// Функциональные кнопки
 		private void btn_settings_Click(object sender, EventArgs e)
 		{
+			PanelForm(new Options());
+			filters_panel(false);
 		}
 
 		private void btn_load_Click_1(object sender, EventArgs e)

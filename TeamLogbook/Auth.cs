@@ -14,6 +14,7 @@ namespace TeamLogbook
 	{
 		public event EventHandler Authenticated;
 		public bool IsAuthenticated { get; private set; }
+		DBController db_controller = new DBController();
 
 		public Auth()
 		{
@@ -27,14 +28,13 @@ namespace TeamLogbook
 
 		private void btn_auth_Click(object sender, EventArgs e)
 		{
-			if (password_box.Text == "1111")
+			if (db_controller.CheckPassword(password_box.Text))
 			{
 				IsAuthenticated = true;
 				OnAuthenticated();
 				this.Close();
 			}
-			else
-				MessageBox.Show("Неверный пароль!", "Ошибка авторизации", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			password_box.Text = "";
 		}
 
 		private void label2_Click(object sender, EventArgs e)

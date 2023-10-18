@@ -66,7 +66,7 @@
 			// 
 			this.password_box.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 18F, System.Drawing.FontStyle.Bold);
 			this.password_box.Location = new System.Drawing.Point(490, 292);
-			this.password_box.MaxLength = 8;
+			this.password_box.MaxLength = 4;
 			this.password_box.Name = "password_box";
 			this.password_box.PasswordChar = '*';
 			this.password_box.Size = new System.Drawing.Size(277, 35);
