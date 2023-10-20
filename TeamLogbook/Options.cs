@@ -50,7 +50,7 @@ namespace TeamLogbook
 		{
 			response = db_controller.GetConfigData(); 
 
-			if (response.Length == 6)  // Проверка, что у нас достаточно элементов в ответе
+			if (response.Length == 7)  // Проверка, что у нас достаточно элементов в ответе
 			{
 				// Подгрузка для автосохранений
 				is_autosaves.Checked = bool.Parse(response[3]);
@@ -121,14 +121,27 @@ namespace TeamLogbook
 				string newPassword = box_pass.Text;
 				string confirmedPassword = box_sub_pass.Text;
 
-				// Проверка совпадения паролей
-				if (newPassword == confirmedPassword)
-				{
-					string hashedPassword = db_controller.HashPassword(newPassword);
-					db_controller.SaveNewPassword(hashedPassword);// Сохранение нового пароля
+				if (newPassword != "" && confirmedPassword != "") {
+					// Проверка совпадения паролей
+					if (newPassword == confirmedPassword)
+					{
+						string hashedPassword = db_controller.HashPassword(newPassword);
+						if (db_controller.update_config_value(hashedPassword, "PasswordHash"))
+						{
+							db_controller.update_config_value("1", "isActive");
+							MessageBox.Show("Пароль сменён", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						}
+						else
+							MessageBox.Show("Не удалось сменить или установить пароль", "Ошибка смены пароля", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					}
+					else
+						MessageBox.Show("Пароли не совпадают", "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				}
 				else
-					MessageBox.Show("Пароли не совпадают", "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				{
+					db_controller.update_config_value("0", "isActive");
+					MessageBox.Show("Пароль убран", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
 			}
 
 			if (bool.Parse(response[1])) // нужно ли вводить старый пароль

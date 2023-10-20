@@ -28,10 +28,20 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
+			this.SuspendLayout();
+			// 
+			// Progress
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(800, 450);
+			this.ClientSize = new System.Drawing.Size(987, 519);
+			this.MaximumSize = new System.Drawing.Size(1003, 558);
+			this.MinimumSize = new System.Drawing.Size(1003, 558);
+			this.Name = "Progress";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Progress";
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion

@@ -48,11 +48,11 @@
 			this.body = new System.Windows.Forms.Panel();
 			this.form_panel = new System.Windows.Forms.Panel();
 			this.control_panel = new System.Windows.Forms.Panel();
-			this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+			this.panel_main = new System.Windows.Forms.FlowLayoutPanel();
+			this.btn_apply_fl = new System.Windows.Forms.Button();
 			this.btn_load = new System.Windows.Forms.Button();
 			this.btn_save = new System.Windows.Forms.Button();
 			this.btn_change_format = new System.Windows.Forms.Button();
-			this.btn_clear_all = new System.Windows.Forms.Button();
 			this.btn_settings = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
@@ -63,7 +63,7 @@
 			this.filter_panel.SuspendLayout();
 			this.body.SuspendLayout();
 			this.control_panel.SuspendLayout();
-			this.flowLayoutPanel1.SuspendLayout();
+			this.panel_main.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// header
@@ -287,23 +287,38 @@
 			// control_panel
 			// 
 			this.control_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
-			this.control_panel.Controls.Add(this.flowLayoutPanel1);
+			this.control_panel.Controls.Add(this.panel_main);
 			this.control_panel.Location = new System.Drawing.Point(12, 243);
 			this.control_panel.Name = "control_panel";
 			this.control_panel.Size = new System.Drawing.Size(223, 374);
 			this.control_panel.TabIndex = 4;
 			// 
-			// flowLayoutPanel1
+			// panel_main
 			// 
-			this.flowLayoutPanel1.Controls.Add(this.btn_load);
-			this.flowLayoutPanel1.Controls.Add(this.btn_save);
-			this.flowLayoutPanel1.Controls.Add(this.btn_change_format);
-			this.flowLayoutPanel1.Controls.Add(this.btn_clear_all);
-			this.flowLayoutPanel1.Controls.Add(this.btn_settings);
-			this.flowLayoutPanel1.Location = new System.Drawing.Point(11, 12);
-			this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-			this.flowLayoutPanel1.Size = new System.Drawing.Size(200, 350);
-			this.flowLayoutPanel1.TabIndex = 0;
+			this.panel_main.Controls.Add(this.btn_apply_fl);
+			this.panel_main.Controls.Add(this.btn_load);
+			this.panel_main.Controls.Add(this.btn_save);
+			this.panel_main.Controls.Add(this.btn_change_format);
+			this.panel_main.Controls.Add(this.btn_settings);
+			this.panel_main.Location = new System.Drawing.Point(11, 12);
+			this.panel_main.Name = "panel_main";
+			this.panel_main.Size = new System.Drawing.Size(200, 350);
+			this.panel_main.TabIndex = 0;
+			// 
+			// btn_apply_fl
+			// 
+			this.btn_apply_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.btn_apply_fl.Enabled = false;
+			this.btn_apply_fl.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_apply_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btn_apply_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.btn_apply_fl.Location = new System.Drawing.Point(3, 3);
+			this.btn_apply_fl.Name = "btn_apply_fl";
+			this.btn_apply_fl.Size = new System.Drawing.Size(197, 60);
+			this.btn_apply_fl.TabIndex = 2;
+			this.btn_apply_fl.Text = "Применить фильтры";
+			this.btn_apply_fl.UseVisualStyleBackColor = false;
+			this.btn_apply_fl.Click += new System.EventHandler(this.btn_clear_all_Click);
 			// 
 			// btn_load
 			// 
@@ -311,13 +326,13 @@
 			this.btn_load.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btn_load.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.btn_load.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_load.Location = new System.Drawing.Point(3, 3);
+			this.btn_load.Location = new System.Drawing.Point(3, 69);
 			this.btn_load.Name = "btn_load";
 			this.btn_load.Size = new System.Drawing.Size(197, 60);
 			this.btn_load.TabIndex = 5;
 			this.btn_load.Text = "Загрузить файл";
 			this.btn_load.UseVisualStyleBackColor = false;
-			this.btn_load.Click += new System.EventHandler(this.btn_load_Click_1);
+			this.btn_load.Click += new System.EventHandler(this.btn_load_Click);
 			// 
 			// btn_save
 			// 
@@ -325,13 +340,13 @@
 			this.btn_save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btn_save.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.btn_save.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_save.Location = new System.Drawing.Point(3, 69);
+			this.btn_save.Location = new System.Drawing.Point(3, 135);
 			this.btn_save.Name = "btn_save";
 			this.btn_save.Size = new System.Drawing.Size(197, 60);
 			this.btn_save.TabIndex = 1;
 			this.btn_save.Text = "Сохранить файл";
 			this.btn_save.UseVisualStyleBackColor = false;
-			this.btn_save.Click += new System.EventHandler(this.btn_load_Click);
+			this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
 			// 
 			// btn_change_format
 			// 
@@ -339,27 +354,13 @@
 			this.btn_change_format.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btn_change_format.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.btn_change_format.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_change_format.Location = new System.Drawing.Point(3, 135);
+			this.btn_change_format.Location = new System.Drawing.Point(3, 201);
 			this.btn_change_format.Name = "btn_change_format";
 			this.btn_change_format.Size = new System.Drawing.Size(197, 60);
 			this.btn_change_format.TabIndex = 3;
 			this.btn_change_format.Text = "Изменить формат";
 			this.btn_change_format.UseVisualStyleBackColor = false;
 			this.btn_change_format.Click += new System.EventHandler(this.btn_change_format_Click);
-			// 
-			// btn_clear_all
-			// 
-			this.btn_clear_all.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.btn_clear_all.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btn_clear_all.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.btn_clear_all.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_clear_all.Location = new System.Drawing.Point(3, 201);
-			this.btn_clear_all.Name = "btn_clear_all";
-			this.btn_clear_all.Size = new System.Drawing.Size(197, 60);
-			this.btn_clear_all.TabIndex = 2;
-			this.btn_clear_all.Text = "Очистить всё";
-			this.btn_clear_all.UseVisualStyleBackColor = false;
-			this.btn_clear_all.Click += new System.EventHandler(this.btn_clear_all_Click);
 			// 
 			// btn_settings
 			// 
@@ -406,7 +407,7 @@
 			this.filter_panel.ResumeLayout(false);
 			this.body.ResumeLayout(false);
 			this.control_panel.ResumeLayout(false);
-			this.flowLayoutPanel1.ResumeLayout(false);
+			this.panel_main.ResumeLayout(false);
 			this.ResumeLayout(false);
 
         }
@@ -431,9 +432,9 @@
 		private System.Windows.Forms.PictureBox icon;
 		private System.Windows.Forms.Label license_lb;
 		private System.Windows.Forms.Panel control_panel;
-		private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+		private System.Windows.Forms.FlowLayoutPanel panel_main;
 		private System.Windows.Forms.Button btn_save;
-		private System.Windows.Forms.Button btn_clear_all;
+		private System.Windows.Forms.Button btn_apply_fl;
 		private System.Windows.Forms.Button btn_change_format;
 		private System.Windows.Forms.Button btn_settings;
 		private System.Windows.Forms.Button btn_load;

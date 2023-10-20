@@ -188,6 +188,27 @@ namespace TeamLogbook
 			return retrievedValues.ToArray();
 		}
 
+		public bool update_config_value(string value, string column)
+		{
+			openConnection();
+			try
+			{
+				OleDbCommand dbCmd = new OleDbCommand("UPDATE Config SET "+column+" = ? WHERE id=1", myConnection);
+				dbCmd.Parameters.AddWithValue("@Val", value);
+				dbCmd.ExecuteNonQuery();
+				return true;
+			}
+			catch (Exception ex)
+			{
+				return false;
+			}
+			finally
+			{
+				closeConnection();
+			}
+		}
+
+
 		public void SaveNewPassword(string password)
 		{
 			if (!string.IsNullOrEmpty(password))

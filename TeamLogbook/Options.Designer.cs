@@ -356,6 +356,8 @@
 			this.Controls.Add(this.about_app_header);
 			this.Controls.Add(this.Security_header);
 			this.Controls.Add(this.panel_security);
+			this.MaximumSize = new System.Drawing.Size(1003, 558);
+			this.MinimumSize = new System.Drawing.Size(1003, 558);
 			this.Name = "Options";
 			this.Text = "Options";
 			this.Load += new System.EventHandler(this.Options_Load);

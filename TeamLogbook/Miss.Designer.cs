@@ -35,7 +35,10 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(987, 519);
+			this.MaximumSize = new System.Drawing.Size(1003, 558);
+			this.MinimumSize = new System.Drawing.Size(1003, 558);
 			this.Name = "Miss";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Miss";
 			this.ResumeLayout(false);
 

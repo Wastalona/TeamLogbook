@@ -11,9 +11,17 @@ namespace TeamLogbook
 {
 	public partial class Log : Form
 	{
-		public Log()
+		private static bool isOpen = false;
+		public Log(bool open)
 		{
 			InitializeComponent();
+			isOpen = open;
+		}
+
+		private void Log_Load(object sender, EventArgs e)
+		{
+			if (!isOpen)
+				dataGridView.Hide();
 		}
 	}
 }

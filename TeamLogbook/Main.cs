@@ -15,5 +15,11 @@ namespace TeamLogbook
 		{
 			InitializeComponent();
 		}
+
+		private void Main_Load(object sender, EventArgs e)
+		{
+			lb_last_edit.Hide();
+			lb_curr_file.Hide();
+		}
 	}
 }
