@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlX.XDevAPI.Common;
+using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
@@ -201,6 +202,30 @@ namespace TeamLogbook
 			catch (Exception ex)
 			{
 				return false;
+			}
+			finally
+			{
+				closeConnection();
+			}
+		}
+
+		public string get_value_from_db(string column)
+		{
+			openConnection();
+			string result = "";
+			try
+			{
+				OleDbCommand dbCmd = new OleDbCommand("SELECT "+column+" FROM Config WHERE id=1", myConnection);
+				using (OleDbDataReader reader = dbCmd.ExecuteReader())
+				{
+					if (reader.Read())
+						result = reader[column].ToString();
+				}
+				return result;
+			}
+			catch (Exception ex)
+			{
+				return "Не удалось получить данные, ошибка:\n" + ex;
 			}
 			finally
 			{

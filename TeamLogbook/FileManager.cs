@@ -7,6 +7,7 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel; // для формата XLSX
 using System.IO;
 using System.Windows.Forms;
+using System.Reflection;
 
 
 namespace TeamLogbook
@@ -84,6 +85,24 @@ namespace TeamLogbook
 			catch (Exception e)
 			{
 				Console.WriteLine("An error occurred while saving the file: " + e.Message);
+			}
+		}
+
+
+		public string[] getFileInfo()
+		{
+			if (File.Exists(filePath))
+			{
+
+				FileInfo fileInfo = new FileInfo(filePath);
+
+				string fileName = fileInfo.Name; // Название файла
+				DateTime lastModified = fileInfo.LastWriteTime; // Последняя дата редактирования файла
+				return new string[2] { fileName, lastModified.ToString() };
+			}
+			else
+			{
+				return new string[2];
 			}
 		}
 	}

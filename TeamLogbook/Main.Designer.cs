@@ -51,7 +51,7 @@
 			this.lb_curr_file.BackColor = System.Drawing.Color.Transparent;
 			this.lb_curr_file.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 24F, System.Drawing.FontStyle.Bold);
 			this.lb_curr_file.ForeColor = System.Drawing.Color.Black;
-			this.lb_curr_file.Location = new System.Drawing.Point(244, 203);
+			this.lb_curr_file.Location = new System.Drawing.Point(12, 195);
 			this.lb_curr_file.Name = "lb_curr_file";
 			this.lb_curr_file.Size = new System.Drawing.Size(285, 43);
 			this.lb_curr_file.TabIndex = 4;
@@ -63,7 +63,7 @@
 			this.lb_last_edit.BackColor = System.Drawing.Color.Transparent;
 			this.lb_last_edit.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 24F, System.Drawing.FontStyle.Bold);
 			this.lb_last_edit.ForeColor = System.Drawing.Color.Black;
-			this.lb_last_edit.Location = new System.Drawing.Point(244, 265);
+			this.lb_last_edit.Location = new System.Drawing.Point(12, 257);
 			this.lb_last_edit.Name = "lb_last_edit";
 			this.lb_last_edit.Size = new System.Drawing.Size(532, 43);
 			this.lb_last_edit.TabIndex = 5;

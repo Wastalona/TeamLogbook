@@ -1,5 +1,6 @@
 ﻿using NPOI.SS.UserModel;
 using System;
+using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -62,10 +63,18 @@ namespace TeamLogbook
 
 		private void main_panel(bool is_active)
 		{
-			if (is_active)
-				panel_main.Enabled = true;
-			else 
-				panel_main.Enabled = false;
+			if (is_active){
+				btn_load.Enabled = true;
+				btn_save.Enabled = true;
+				btn_change_format.Enabled = true;
+				btn_settings.Enabled = true;
+			}
+			else{ 
+				btn_load.Enabled = false;
+				btn_save.Enabled = false;
+				btn_change_format.Enabled = false;
+				btn_settings.Enabled = false;
+			}
 		}
 
 		// Кнопки меню
@@ -118,23 +127,38 @@ namespace TeamLogbook
 				return;
 
 			string filename = openFileDialog1.FileName; // получаем выбранный файл
-			FileManager fileManager = new FileManager(filename);
-			
+			string extension = Path.GetExtension(filename);
 
-			if (form_panel.Controls[0].Text == "Log")
+			if (extension.Equals(".xlsx", StringComparison.OrdinalIgnoreCase))
 			{
-				Label infoLabel = (Label)form_panel.Controls[0].Controls["info_lb"];
-				DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
-				dgv.Show();
-				fileManager.read_file(dgv);
+				FileManager fileManager = new FileManager(filename);
+
+				db_controller.update_config_value(filename, "CurrentFile");
+
+				if (form_panel.Controls[0].Text == "Log")
+				{
+					DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
+					dgv.Show();
+					fileManager.read_file(dgv);
+				}
+				else if (form_panel.Controls[0].Text == "Main")
+				{
+					Label cur_file = (Label)form_panel.Controls[0].Controls["lb_curr_file"];
+					Label last_mod = (Label)form_panel.Controls[0].Controls["lb_last_edit"];
+					Label info = (Label)form_panel.Controls[0].Controls["info_lb"];
+					FileManager file_manager = new FileManager(filename);
+					string[] fileinfo = file_manager.getFileInfo();
+					cur_file.Text = "Текущий файл: " + fileinfo[0];
+					last_mod.Text = "Последнее изменение: " + fileinfo[1];
+					last_mod.Show();
+					cur_file.Show();
+					info.Hide();
+
+					MessageBox.Show("Файл загружен и отображён на вкладке журнал", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				}
 			}
-			else if (form_panel.Controls[0].Text == "Main")
-			{
-				//db_controller.push("");
-				MessageBox.Show("Файл загружен и отображён на вкладке журнал", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-			}
-			
-			//MessageBox.Show("Файл успешно открыт " + filename, "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			else
+				MessageBox.Show("Файл имеет неверный формат", "Ошибка загурзки файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 
@@ -142,6 +166,7 @@ namespace TeamLogbook
 		{
 			PanelForm(new ExcelLoadForms());
 			filters_panel(false);
+			main_panel(false);
 		}
 
 		private void btn_clear_all_Click(object sender, EventArgs e)
@@ -153,10 +178,9 @@ namespace TeamLogbook
 		{
 			if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
 				return;
-			// получаем выбранный файл
-			string filename = saveFileDialog1.FileName;
-			// сохраняем текст в файл
-			System.IO.File.WriteAllText(filename, "asd");
+
+			string filename = saveFileDialog1.FileName; // получаем выбранный файл
+			//File.WriteAllText(filename, textToSave); // сохраняем текст в файл
 			MessageBox.Show("Файл сохранен");
 		}
 	}
