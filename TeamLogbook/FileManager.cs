@@ -7,6 +7,7 @@ using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel; // для формата XLSX
 using System.IO;
 using System.Windows.Forms;
+using ClosedXML.Excel;
 using System.Reflection;
 
 
@@ -114,6 +115,33 @@ namespace TeamLogbook
 			else
 			{
 				return new string[2];
+			}
+		}
+
+		public void ExportToExcel(DataGridView dataGridView)
+		{
+			using (var workbook = new XLWorkbook())
+			{
+				var worksheet = workbook.Worksheets.Add("Sheet1");
+
+				// Добававление заголовков столбцов в первую строку
+				for (int col = 1; col <= dataGridView.Columns.Count; col++)
+				{
+					worksheet.Cell(1, col).Value = dataGridView.Columns[col - 1].HeaderText;
+				}
+
+				// Заполнение данными из DataGridView
+				for (int row = 0; row < dataGridView.Rows.Count; row++)
+				{
+					for (int col = 0; col < dataGridView.Columns.Count; col++)
+					{
+						if (dataGridView.Rows[row].Cells[col].Value != null)
+							worksheet.Cell(row + 2, col + 1).Value = dataGridView.Rows[row].Cells[col].Value.ToString();
+					}
+				}
+
+				// Сохранение книги в файл
+				workbook.SaveAs(filePath);
 			}
 		}
 	}

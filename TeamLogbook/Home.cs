@@ -182,22 +182,11 @@ namespace TeamLogbook
 				return;
 
 			string filename = saveFileDialog1.FileName; // получаем выбранный файл
-			if (save_file())
-			{
-				//File.WriteAllText(filename, textToSave); // сохраняем текст в файл
-				MessageBox.Show("Файл сохранен");
-			}
-			else {
-				DialogResult result = MessageBox.Show("Не удалось сохранить файл", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
-				if (result == DialogResult.Retry)
-					btn_save_Click(sender, e);
-			};
-		}
+			FileManager fileManager = new FileManager(filename);
+			DataGridView dg = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
 
-		private bool save_file()
-		{
-
-			return false;
+			fileManager.ExportToExcel(dg);
+			MessageBox.Show("Файл сохранен");
 		}
 	}
 }
