@@ -21,7 +21,7 @@ namespace TeamLogbook
 			filePath = path;
 		}
 
-		public void read_file(DataGridView dataGridView)
+		public void read_file(DataGridView dataGridView, string group="", string subject="", string name="")
 		{
 			// Очищаем dataGridView
 			dataGridView.Rows.Clear();
@@ -50,18 +50,29 @@ namespace TeamLogbook
 						IRow row = sheet.GetRow(rowIdx);
 						if (row != null)
 						{
-							// Создаем строку для DataGridView
-							DataGridViewRow dataGridViewRow = new DataGridViewRow();
+							// Логика для фильтрации строк
+							string cellGroup = row.GetCell(0)?.ToString() ?? ""; // 0 индекс столбца с группой
+							string cellSubject = row.GetCell(1)?.ToString() ?? ""; // 1 индекс столбца с предметом
+							string cellName = row.GetCell(2)?.ToString() ?? ""; // 2 индекс столбца с именем
 
-							// Проходимся по ячейкам в строке и добавляем их в DataGridView как значения в столбцах
-							foreach (ICell cell in row.Cells)
+							// Проверка, соответствуют ли значения фильтрам
+							if ((string.IsNullOrWhiteSpace(group) || cellGroup == group) &&
+								(string.IsNullOrWhiteSpace(subject) || cellSubject == subject) &&
+								(string.IsNullOrWhiteSpace(name) || cellName == name))
 							{
-								string cellValue = cell.ToString();
-								dataGridViewRow.Cells.Add(new DataGridViewTextBoxCell { Value = cellValue });
-							}
+								// Создаем строку для DataGridView
+								DataGridViewRow dataGridViewRow = new DataGridViewRow();
 
-							// Добавляем созданную строку в DataGridView
-							dataGridView.Rows.Add(dataGridViewRow);
+								// Проходимся по ячейкам в строке и добавляем их в DataGridView как значения в столбцах
+								foreach (ICell cell in row.Cells)
+								{
+									string cellValue = cell.ToString();
+									dataGridViewRow.Cells.Add(new DataGridViewTextBoxCell { Value = cellValue });
+								}
+
+								// Добавляем созданную строку в DataGridView
+								dataGridView.Rows.Add(dataGridViewRow);
+							}
 						}
 					}
 				}

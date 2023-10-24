@@ -380,6 +380,12 @@
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
+			// saveFileDialog1
+			// 
+			this.saveFileDialog1.FileName = "save.xlsx";
+			this.saveFileDialog1.DefaultExt = ".xlsx";
+			this.saveFileDialog1.Title = "Сохранение файла";
+			// 
 			// Home
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);

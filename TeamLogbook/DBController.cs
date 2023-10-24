@@ -129,7 +129,7 @@ namespace TeamLogbook
 		*/
 		{
 			if (string.IsNullOrEmpty(path))
-				path = ".\\autosaves\\";
+				path = "C:\\";
 
 			if (string.IsNullOrEmpty(interval) || (Int32.Parse(interval) < 0 && Int32.Parse(interval) > 120))
 				path = "15";

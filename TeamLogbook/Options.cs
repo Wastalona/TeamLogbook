@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySqlX.XDevAPI.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -98,7 +99,19 @@ namespace TeamLogbook
 		*/
 		{
 			if (is_autosaves.Checked)
-				db_controller.SaveAutosavesSettings(true, box_save_path.Text, box_range.Text);
+			{
+				if (Int32.Parse(box_range.Text) > 0 && Int32.Parse(box_range.Text) <= 120)
+				{
+					if (box_save_path.Text.Length <= 3)
+					{
+						DialogResult result = MessageBox.Show("Файл будет сохранён в папку C:\\", "Предупреждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+						if (result == DialogResult.OK)
+							db_controller.SaveAutosavesSettings(true, box_save_path.Text, box_range.Text);
+					}
+				}
+				else
+					MessageBox.Show("Неверный интревал автосохранений", "Ошибка записи", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 			else
 				db_controller.SaveAutosavesSettings(false, box_save_path.Text, box_range.Text);
 		}

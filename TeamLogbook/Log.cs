@@ -27,9 +27,34 @@ namespace TeamLogbook
 			{
 				FileManager fileManager = new FileManager(path);
 				dataGridView.Show();
-				fileManager.read_file(dataGridView);
+				try
+				{
+					fileManager.read_file(dataGridView);
+				}
+				catch (System.IO.IOException){
+					MessageBox.Show("Убедитесь, что файл не открыт в другой программе", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				} 
 			}
 			else dataGridView.Hide();
+		}
+
+		private void btn_add_col_Click(object sender, EventArgs e)
+		{
+			DateTime now = DateTime.Now;
+			string date = now.Day.ToString() + "." + now.Month.ToString() + "." + now.Year.ToString();
+			dataGridView.Columns.Add(date, date);
+		}
+
+		private void btn_delete_col_Click(object sender, EventArgs e)
+		{
+			DialogResult result = MessageBox.Show("Вы действительно хотите удалить столбец", "Предупреждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+			if (result == DialogResult.OK)
+			{
+				if (dataGridView.Columns.Count > 0)
+					dataGridView.Columns.RemoveAt(dataGridView.Columns.Count - 1);
+				else
+					MessageBox.Show("Больше удалять нечего", "Уведомление", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+			}
 		}
 	}
 }

@@ -41,6 +41,7 @@ namespace TeamLogbook
 		private void Home_Load(object sender, EventArgs e)
 		{
 			PanelForm(new Main());
+			btn_save.Enabled = false;
 		}
 
 		private void filters_panel(bool is_active)
@@ -83,6 +84,7 @@ namespace TeamLogbook
 			PanelForm(new Main());
 			filters_panel(false);
 			main_panel(true);
+			btn_save.Enabled = false;
 		}
 
 		private void btn_log_Click(object sender, EventArgs e)
@@ -180,8 +182,22 @@ namespace TeamLogbook
 				return;
 
 			string filename = saveFileDialog1.FileName; // получаем выбранный файл
-			//File.WriteAllText(filename, textToSave); // сохраняем текст в файл
-			MessageBox.Show("Файл сохранен");
+			if (save_file())
+			{
+				//File.WriteAllText(filename, textToSave); // сохраняем текст в файл
+				MessageBox.Show("Файл сохранен");
+			}
+			else {
+				DialogResult result = MessageBox.Show("Не удалось сохранить файл", "Ошибка", MessageBoxButtons.RetryCancel, MessageBoxIcon.Error);
+				if (result == DialogResult.Retry)
+					btn_save_Click(sender, e);
+			};
+		}
+
+		private bool save_file()
+		{
+
+			return false;
 		}
 	}
 }
