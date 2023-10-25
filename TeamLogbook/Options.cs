@@ -1,13 +1,6 @@
-﻿using MySqlX.XDevAPI.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.IO;
 
 namespace TeamLogbook
 {
@@ -108,6 +101,8 @@ namespace TeamLogbook
 						if (result == DialogResult.OK)
 							db_controller.SaveAutosavesSettings(true, box_save_path.Text, box_range.Text);
 					}
+					else
+						db_controller.SaveAutosavesSettings(true, box_save_path.Text, box_range.Text);
 				}
 				else
 					MessageBox.Show("Неверный интревал автосохранений", "Ошибка записи", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -166,6 +161,21 @@ namespace TeamLogbook
 			}
 			else
 				change_password();
+		}
+
+		private void btn_rem_autosaves_Click(object sender, EventArgs e)
+		{
+			string filePath = db_controller.get_value_from_db("SavePath") + "\\teamlogbook-autosave.xlsx";
+			try
+			{
+				File.Delete(filePath);// Удаляем файл
+				MessageBox.Show(filePath);
+				MessageBox.Show("Файл успешно удален", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Произошла ошибка при удалении файла: " + ex.Message, "Ошибка удаления", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
 		}
 	}
 }

@@ -4,6 +4,8 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using System.Timers;
+using System.Threading;
 
 namespace TeamLogbook
 {
@@ -38,11 +40,19 @@ namespace TeamLogbook
 			fm.Show();
 		}
 
+
 		private void Home_Load(object sender, EventArgs e)
 		{
+			System.Timers.Timer timer = new System.Timers.Timer(); // Используйте полное имя класса
+
+			timer.Interval = Int32.Parse(db_controller.get_value_from_db("Range")) * 60 * 1000; // Установка интервала в миллисекундах
+			timer.Elapsed += autosave;
+
 			PanelForm(new Main());
 			btn_save.Enabled = false;
+			timer.Start(); // Обратите внимание, что "Start" с заглавной буквы
 		}
+
 
 		private void filters_panel(bool is_active)
 		{
@@ -178,15 +188,31 @@ namespace TeamLogbook
 
 		private void btn_save_Click(object sender, EventArgs e)
 		{
+			save(db_controller.get_value_from_db("CurrentFile"), true);
+		}
+
+		private void btn_save_as_Click(object sender, EventArgs e)
+		{
 			if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
 				return;
 
-			string filename = saveFileDialog1.FileName; // получаем выбранный файл
+			save(saveFileDialog1.FileName.ToString(), true);
+		}
+
+		private void autosave(object sender, ElapsedEventArgs e)
+		{
+			MessageBox.Show("Autosave "+ db_controller.get_value_from_db("SavePath"));
+			save(db_controller.get_value_from_db("SavePath") + "\\teamlogbook-autosave.xlsx", false);
+		}
+
+		private void save(string filename, bool message)
+		{
 			FileManager fileManager = new FileManager(filename);
 			DataGridView dg = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
 
 			fileManager.ExportToExcel(dg);
-			MessageBox.Show("Файл сохранен");
+			if (message)
+				MessageBox.Show("Файл сохранен", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 	}
 }

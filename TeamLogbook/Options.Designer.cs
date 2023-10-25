@@ -40,23 +40,24 @@
 			this.pass_req_lb = new System.Windows.Forms.Label();
 			this.panel_security = new System.Windows.Forms.Panel();
 			this.about_app_header = new System.Windows.Forms.Label();
-			this.panel_about = new System.Windows.Forms.Panel();
-			this.list_info = new System.Windows.Forms.ListBox();
 			this.btn_save = new System.Windows.Forms.Button();
 			this.box_range = new System.Windows.Forms.TextBox();
 			this.lb_range = new System.Windows.Forms.Label();
 			this.box_save_path = new System.Windows.Forms.TextBox();
 			this.lb_path = new System.Windows.Forms.Label();
 			this.panel_autosaves = new System.Windows.Forms.Panel();
+			this.btn_rem_autosaves = new System.Windows.Forms.Button();
 			this.lb_req_range = new System.Windows.Forms.Label();
+			this.btn_browse = new System.Windows.Forms.Button();
 			this.is_autosaves = new System.Windows.Forms.CheckBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-			this.btn_browse = new System.Windows.Forms.Button();
+			this.list_info = new System.Windows.Forms.ListBox();
+			this.panel_about = new System.Windows.Forms.Panel();
 			this.panel_security.SuspendLayout();
-			this.panel_about.SuspendLayout();
 			this.panel_autosaves.SuspendLayout();
+			this.panel_about.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btn_change_pass
@@ -181,36 +182,11 @@
 			this.about_app_header.AutoSize = true;
 			this.about_app_header.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 24F, System.Drawing.FontStyle.Bold);
 			this.about_app_header.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(34)))), ((int)(((byte)(32)))));
-			this.about_app_header.Location = new System.Drawing.Point(378, 9);
+			this.about_app_header.Location = new System.Drawing.Point(358, 9);
 			this.about_app_header.Name = "about_app_header";
 			this.about_app_header.Size = new System.Drawing.Size(266, 43);
 			this.about_app_header.TabIndex = 14;
 			this.about_app_header.Text = "Об приложении";
-			// 
-			// panel_about
-			// 
-			this.panel_about.Controls.Add(this.list_info);
-			this.panel_about.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(34)))), ((int)(((byte)(32)))));
-			this.panel_about.Location = new System.Drawing.Point(377, 55);
-			this.panel_about.Name = "panel_about";
-			this.panel_about.Size = new System.Drawing.Size(598, 123);
-			this.panel_about.TabIndex = 17;
-			// 
-			// list_info
-			// 
-			this.list_info.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(246)))), ((int)(((byte)(244)))));
-			this.list_info.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold);
-			this.list_info.FormattingEnabled = true;
-			this.list_info.ItemHeight = 28;
-			this.list_info.Items.AddRange(new object[] {
-            "TeamLogbook - электронный журнал, основная цель ",
-            "которого – упростить работу преподавателей ",
-            "образовательного учреждения по контролю знаний ",
-            "учащихся."});
-			this.list_info.Location = new System.Drawing.Point(0, 0);
-			this.list_info.Name = "list_info";
-			this.list_info.Size = new System.Drawing.Size(598, 116);
-			this.list_info.TabIndex = 18;
 			// 
 			// btn_save
 			// 
@@ -218,7 +194,7 @@
 			this.btn_save.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btn_save.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold);
 			this.btn_save.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(201)))), ((int)(((byte)(153)))));
-			this.btn_save.Location = new System.Drawing.Point(133, 195);
+			this.btn_save.Location = new System.Drawing.Point(261, 198);
 			this.btn_save.Name = "btn_save";
 			this.btn_save.Size = new System.Drawing.Size(211, 49);
 			this.btn_save.TabIndex = 0;
@@ -273,7 +249,9 @@
 			// panel_autosaves
 			// 
 			this.panel_autosaves.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(246)))), ((int)(((byte)(244)))));
+			this.panel_autosaves.Controls.Add(this.btn_rem_autosaves);
 			this.panel_autosaves.Controls.Add(this.lb_req_range);
+			this.panel_autosaves.Controls.Add(this.btn_browse);
 			this.panel_autosaves.Controls.Add(this.is_autosaves);
 			this.panel_autosaves.Controls.Add(this.lb_range);
 			this.panel_autosaves.Controls.Add(this.btn_save);
@@ -281,10 +259,24 @@
 			this.panel_autosaves.Controls.Add(this.lb_path);
 			this.panel_autosaves.Controls.Add(this.box_save_path);
 			this.panel_autosaves.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(34)))), ((int)(((byte)(32)))));
-			this.panel_autosaves.Location = new System.Drawing.Point(377, 256);
+			this.panel_autosaves.Location = new System.Drawing.Point(366, 240);
 			this.panel_autosaves.Name = "panel_autosaves";
-			this.panel_autosaves.Size = new System.Drawing.Size(487, 251);
+			this.panel_autosaves.Size = new System.Drawing.Size(487, 260);
 			this.panel_autosaves.TabIndex = 19;
+			// 
+			// btn_rem_autosaves
+			// 
+			this.btn_rem_autosaves.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+			this.btn_rem_autosaves.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_rem_autosaves.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 12F, System.Drawing.FontStyle.Bold);
+			this.btn_rem_autosaves.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(201)))), ((int)(((byte)(153)))));
+			this.btn_rem_autosaves.Location = new System.Drawing.Point(9, 198);
+			this.btn_rem_autosaves.Name = "btn_rem_autosaves";
+			this.btn_rem_autosaves.Size = new System.Drawing.Size(246, 49);
+			this.btn_rem_autosaves.TabIndex = 23;
+			this.btn_rem_autosaves.Text = "Удалить автосохранения";
+			this.btn_rem_autosaves.UseVisualStyleBackColor = false;
+			this.btn_rem_autosaves.Click += new System.EventHandler(this.btn_rem_autosaves_Click);
 			// 
 			// lb_req_range
 			// 
@@ -296,6 +288,21 @@
 			this.lb_req_range.Size = new System.Drawing.Size(276, 28);
 			this.lb_req_range.TabIndex = 22;
 			this.lb_req_range.Text = "( 0 < значение <= 120)";
+			// 
+			// btn_browse
+			// 
+			this.btn_browse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(87)))), ((int)(((byte)(66)))));
+			this.btn_browse.Enabled = false;
+			this.btn_browse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_browse.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 12F, System.Drawing.FontStyle.Bold);
+			this.btn_browse.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(201)))), ((int)(((byte)(153)))));
+			this.btn_browse.Location = new System.Drawing.Point(368, 154);
+			this.btn_browse.Name = "btn_browse";
+			this.btn_browse.Size = new System.Drawing.Size(104, 32);
+			this.btn_browse.TabIndex = 22;
+			this.btn_browse.Text = "обзор";
+			this.btn_browse.UseVisualStyleBackColor = false;
+			this.btn_browse.Click += new System.EventHandler(this.btn_browse_Click);
 			// 
 			// is_autosaves
 			// 
@@ -314,7 +321,7 @@
 			this.label2.AutoSize = true;
 			this.label2.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 24F, System.Drawing.FontStyle.Bold);
 			this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(34)))), ((int)(((byte)(32)))));
-			this.label2.Location = new System.Drawing.Point(378, 203);
+			this.label2.Location = new System.Drawing.Point(361, 194);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(285, 43);
 			this.label2.TabIndex = 20;
@@ -329,27 +336,36 @@
 			this.folderBrowserDialog1.Description = "Выберите папку, в которую будут загружаться автосохранения";
 			this.folderBrowserDialog1.SelectedPath = ".\\autosaves\\";
 			// 
-			// btn_browse
+			// list_info
 			// 
-			this.btn_browse.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(97)))), ((int)(((byte)(87)))), ((int)(((byte)(66)))));
-			this.btn_browse.Enabled = false;
-			this.btn_browse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btn_browse.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 12F, System.Drawing.FontStyle.Bold);
-			this.btn_browse.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(199)))), ((int)(((byte)(201)))), ((int)(((byte)(153)))));
-			this.btn_browse.Location = new System.Drawing.Point(745, 413);
-			this.btn_browse.Name = "btn_browse";
-			this.btn_browse.Size = new System.Drawing.Size(104, 32);
-			this.btn_browse.TabIndex = 22;
-			this.btn_browse.Text = "обзор";
-			this.btn_browse.UseVisualStyleBackColor = false;
-			this.btn_browse.Click += new System.EventHandler(this.btn_browse_Click);
+			this.list_info.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(246)))), ((int)(((byte)(244)))));
+			this.list_info.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 15.75F, System.Drawing.FontStyle.Bold);
+			this.list_info.FormattingEnabled = true;
+			this.list_info.ItemHeight = 28;
+			this.list_info.Items.AddRange(new object[] {
+            "TeamLogbook - электронный журнал, основная цель ",
+            "которого – упростить работу преподавателей ",
+            "образовательного учреждения по контролю знаний ",
+            "учащихся."});
+			this.list_info.Location = new System.Drawing.Point(3, 0);
+			this.list_info.Name = "list_info";
+			this.list_info.Size = new System.Drawing.Size(598, 116);
+			this.list_info.TabIndex = 18;
+			// 
+			// panel_about
+			// 
+			this.panel_about.Controls.Add(this.list_info);
+			this.panel_about.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(34)))), ((int)(((byte)(32)))));
+			this.panel_about.Location = new System.Drawing.Point(366, 55);
+			this.panel_about.Name = "panel_about";
+			this.panel_about.Size = new System.Drawing.Size(609, 123);
+			this.panel_about.TabIndex = 17;
 			// 
 			// Options
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(987, 519);
-			this.Controls.Add(this.btn_browse);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.panel_autosaves);
 			this.Controls.Add(this.panel_about);
@@ -363,9 +379,9 @@
 			this.Load += new System.EventHandler(this.Options_Load);
 			this.panel_security.ResumeLayout(false);
 			this.panel_security.PerformLayout();
-			this.panel_about.ResumeLayout(false);
 			this.panel_autosaves.ResumeLayout(false);
 			this.panel_autosaves.PerformLayout();
+			this.panel_about.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -384,13 +400,11 @@
 		private System.Windows.Forms.Label pass_req_lb;
 		private System.Windows.Forms.Panel panel_security;
 		private System.Windows.Forms.Label about_app_header;
-		private System.Windows.Forms.Panel panel_about;
 		private System.Windows.Forms.Button btn_save;
 		private System.Windows.Forms.TextBox box_range;
 		private System.Windows.Forms.Label lb_range;
 		private System.Windows.Forms.TextBox box_save_path;
 		private System.Windows.Forms.Label lb_path;
-		private System.Windows.Forms.ListBox list_info;
 		private System.Windows.Forms.Panel panel_autosaves;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.CheckBox is_autosaves;
@@ -398,5 +412,8 @@
 		private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
 		private System.Windows.Forms.Button btn_browse;
 		private System.Windows.Forms.Label lb_req_range;
+		private System.Windows.Forms.Button btn_rem_autosaves;
+		private System.Windows.Forms.ListBox list_info;
+		private System.Windows.Forms.Panel panel_about;
 	}
 }

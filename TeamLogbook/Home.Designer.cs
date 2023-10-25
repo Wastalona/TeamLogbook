@@ -47,13 +47,14 @@
 			this.filter_panel = new System.Windows.Forms.Panel();
 			this.body = new System.Windows.Forms.Panel();
 			this.form_panel = new System.Windows.Forms.Panel();
+			this.btn_settings = new System.Windows.Forms.Button();
 			this.control_panel = new System.Windows.Forms.Panel();
 			this.panel_main = new System.Windows.Forms.FlowLayoutPanel();
 			this.btn_apply_fl = new System.Windows.Forms.Button();
 			this.btn_load = new System.Windows.Forms.Button();
 			this.btn_save = new System.Windows.Forms.Button();
+			this.btn_save_as = new System.Windows.Forms.Button();
 			this.btn_change_format = new System.Windows.Forms.Button();
-			this.btn_settings = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.header.SuspendLayout();
@@ -62,6 +63,7 @@
 			this.fotter.SuspendLayout();
 			this.filter_panel.SuspendLayout();
 			this.body.SuspendLayout();
+			this.form_panel.SuspendLayout();
 			this.control_panel.SuspendLayout();
 			this.panel_main.SuspendLayout();
 			this.SuspendLayout();
@@ -279,10 +281,25 @@
 			// 
 			// form_panel
 			// 
+			this.form_panel.Controls.Add(this.btn_change_format);
 			this.form_panel.Location = new System.Drawing.Point(3, 3);
 			this.form_panel.Name = "form_panel";
 			this.form_panel.Size = new System.Drawing.Size(1003, 512);
 			this.form_panel.TabIndex = 3;
+			// 
+			// btn_settings
+			// 
+			this.btn_settings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_settings.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btn_settings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.btn_settings.Location = new System.Drawing.Point(3, 267);
+			this.btn_settings.Name = "btn_settings";
+			this.btn_settings.Size = new System.Drawing.Size(197, 60);
+			this.btn_settings.TabIndex = 4;
+			this.btn_settings.Text = "Настройки";
+			this.btn_settings.UseVisualStyleBackColor = false;
+			this.btn_settings.Click += new System.EventHandler(this.btn_settings_Click);
 			// 
 			// control_panel
 			// 
@@ -298,7 +315,7 @@
 			this.panel_main.Controls.Add(this.btn_apply_fl);
 			this.panel_main.Controls.Add(this.btn_load);
 			this.panel_main.Controls.Add(this.btn_save);
-			this.panel_main.Controls.Add(this.btn_change_format);
+			this.panel_main.Controls.Add(this.btn_save_as);
 			this.panel_main.Controls.Add(this.btn_settings);
 			this.panel_main.Location = new System.Drawing.Point(11, 12);
 			this.panel_main.Name = "panel_main";
@@ -348,13 +365,27 @@
 			this.btn_save.UseVisualStyleBackColor = false;
 			this.btn_save.Click += new System.EventHandler(this.btn_save_Click);
 			// 
+			// btn_save_as
+			// 
+			this.btn_save_as.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.btn_save_as.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_save_as.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btn_save_as.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.btn_save_as.Location = new System.Drawing.Point(3, 201);
+			this.btn_save_as.Name = "btn_save_as";
+			this.btn_save_as.Size = new System.Drawing.Size(197, 60);
+			this.btn_save_as.TabIndex = 6;
+			this.btn_save_as.Text = "Сохранить как";
+			this.btn_save_as.UseVisualStyleBackColor = false;
+			this.btn_save_as.Click += new System.EventHandler(this.btn_save_as_Click);
+			// 
 			// btn_change_format
 			// 
 			this.btn_change_format.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
 			this.btn_change_format.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
 			this.btn_change_format.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
 			this.btn_change_format.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_change_format.Location = new System.Drawing.Point(3, 201);
+			this.btn_change_format.Location = new System.Drawing.Point(793, 452);
 			this.btn_change_format.Name = "btn_change_format";
 			this.btn_change_format.Size = new System.Drawing.Size(197, 60);
 			this.btn_change_format.TabIndex = 3;
@@ -362,28 +393,14 @@
 			this.btn_change_format.UseVisualStyleBackColor = false;
 			this.btn_change_format.Click += new System.EventHandler(this.btn_change_format_Click);
 			// 
-			// btn_settings
-			// 
-			this.btn_settings.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.btn_settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btn_settings.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.btn_settings.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_settings.Location = new System.Drawing.Point(3, 267);
-			this.btn_settings.Name = "btn_settings";
-			this.btn_settings.Size = new System.Drawing.Size(197, 60);
-			this.btn_settings.TabIndex = 4;
-			this.btn_settings.Text = "Настройки";
-			this.btn_settings.UseVisualStyleBackColor = false;
-			this.btn_settings.Click += new System.EventHandler(this.btn_settings_Click);
-			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
 			// 
 			// saveFileDialog1
 			// 
+			this.saveFileDialog1.DefaultExt = "xlsx";
 			this.saveFileDialog1.FileName = "save.xlsx";
-			this.saveFileDialog1.DefaultExt = ".xlsx";
 			this.saveFileDialog1.Title = "Сохранение файла";
 			// 
 			// Home
@@ -412,6 +429,7 @@
 			this.fotter.PerformLayout();
 			this.filter_panel.ResumeLayout(false);
 			this.body.ResumeLayout(false);
+			this.form_panel.ResumeLayout(false);
 			this.control_panel.ResumeLayout(false);
 			this.panel_main.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -447,6 +465,7 @@
 		private System.Windows.Forms.Panel form_panel;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+		private System.Windows.Forms.Button btn_save_as;
 	}
 }
 
