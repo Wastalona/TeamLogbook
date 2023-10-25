@@ -50,6 +50,7 @@ namespace TeamLogbook
 
 			PanelForm(new Main());
 			btn_save.Enabled = false;
+			btn_save_as.Enabled = false;
 			timer.Start(); // Обратите внимание, что "Start" с заглавной буквы
 		}
 
@@ -77,13 +78,13 @@ namespace TeamLogbook
 			if (is_active){
 				btn_load.Enabled = true;
 				btn_save.Enabled = true;
-				btn_change_format.Enabled = true;
+				btn_save_as.Enabled = true;
 				btn_settings.Enabled = true;
 			}
 			else{ 
 				btn_load.Enabled = false;
 				btn_save.Enabled = false;
-				btn_change_format.Enabled = false;
+				btn_save_as.Enabled = false;
 				btn_settings.Enabled = false;
 			}
 		}
@@ -95,6 +96,7 @@ namespace TeamLogbook
 			filters_panel(false);
 			main_panel(true);
 			btn_save.Enabled = false;
+			btn_save_as.Enabled = false;
 		}
 
 		private void btn_log_Click(object sender, EventArgs e)
