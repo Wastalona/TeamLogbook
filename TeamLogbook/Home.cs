@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Timers;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace TeamLogbook
 {
@@ -38,9 +39,29 @@ namespace TeamLogbook
 			fm.Show();
 		}
 
+		private void load_filters()
+		{
+			string[] students = db_controller.get_values_from_db("Student", "Marks");
+			for (int i = 0; i < students.Length; i++)
+			{
+				student_fl.Items.Add(students[i]);
+			}
+			string[] groups = db_controller.get_values_from_db("Group", "Marks");
+			for (int i = 0; i < groups.Length; i++)
+			{
+				group_fl.Items.Add(groups[i]);
+			}
+			string[] lessons = db_controller.get_values_from_db("Lesson", "Marks");
+			for (int i = 0; i < lessons.Length; i++)
+			{
+				subject_fl.Items.Add(lessons[i]);
+			}
+		}
 
 		private void Home_Load(object sender, EventArgs e)
 		{
+			load_filters();
+
 			System.Timers.Timer timer = new System.Timers.Timer(); // Используйте полное имя класса
 
 			timer.Interval = Int32.Parse(db_controller.get_value_from_db("Range")) * 60 * 1000; // Установка интервала в миллисекундах

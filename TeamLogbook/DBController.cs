@@ -1,10 +1,13 @@
-﻿using MySqlX.XDevAPI.Common;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using MathNet.Numerics.Distributions;
+using MySqlX.XDevAPI.Common;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -261,6 +264,39 @@ namespace TeamLogbook
 			}
 		}
 
+
+		public string[] get_values_from_db(string column, string table)
+		{
+			openConnection();
+
+			string[] result = null;
+			try
+			{
+				OleDbCommand dbCmd = new OleDbCommand("SELECT DISTINCT [" + column + "] FROM [" + table + "]", myConnection);
+				List<string> data = new List<string>();
+
+				OleDbDataReader reader = dbCmd.ExecuteReader();
+				while (reader.Read())
+				{
+					data.Add(reader[column].ToString());
+				}
+
+				result = data.ToArray();
+
+				return result;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Произошла ошибка при загрузке фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				closeConnection();
+			}
+			return result;
+		}
+
+
 		public void save()
 		{
 			string filePath=get_value_from_db("CurrentFile");
@@ -302,5 +338,59 @@ namespace TeamLogbook
 				}
 			}
 		}
+
+		public string[,] load_filters()
+		{
+			openConnection();
+
+			string[,] result = null;
+
+			try
+			{
+				OleDbCommand dbCmd = new OleDbCommand("SELECT DISTINCT [Student], [Lesson], [Group] FROM Marks", myConnection);
+				OleDbDataReader reader = dbCmd.ExecuteReader();
+				List<string> students = new List<string>();
+				List<string> lessons = new List<string>();
+				List<string> groups = new List<string>();
+
+				while (reader.Read())
+				{
+					students.Add(reader["Student"].ToString());
+					lessons.Add(reader["Lesson"].ToString());
+					groups.Add(reader["Group"].ToString());
+				}
+
+				reader.Close();
+
+				// Преобразование списков в массивы
+				groups = groups.Distinct().ToList();
+				lessons = lessons.Distinct().ToList();
+				students = students.Distinct().ToList();
+
+				int maxCount = Math.Max(groups.Count, Math.Max(lessons.Count, students.Count));
+				result = new string[maxCount, 3];
+
+				for (int i = 0; i < maxCount; i++)
+				{
+					if (i < groups.Count)
+						result[i, 0] = groups[i];
+					if (i < lessons.Count)
+						result[i, 1] = lessons[i];
+					if (i < students.Count)
+						result[i, 2] = students[i];
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Произошла ошибка при загрузке фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				closeConnection();
+			}
+
+			return result;
+		}
+
 	}
 }

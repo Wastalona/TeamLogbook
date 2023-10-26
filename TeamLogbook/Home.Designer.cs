@@ -184,12 +184,17 @@
 			// 
 			// subject_fl
 			// 
+			this.subject_fl.AutoCompleteCustomSource.AddRange(new string[] {
+            "Предмет"});
 			this.subject_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.subject_fl.DropDownHeight = 150;
 			this.subject_fl.Enabled = false;
 			this.subject_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.subject_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
 			this.subject_fl.FormattingEnabled = true;
+			this.subject_fl.IntegralHeight = false;
 			this.subject_fl.Location = new System.Drawing.Point(8, 93);
+			this.subject_fl.MaxDropDownItems = 5;
 			this.subject_fl.Name = "subject_fl";
 			this.subject_fl.Size = new System.Drawing.Size(207, 36);
 			this.subject_fl.TabIndex = 3;
@@ -198,13 +203,16 @@
 			// student_fl
 			// 
 			this.student_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.student_fl.DropDownHeight = 150;
 			this.student_fl.Enabled = false;
 			this.student_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.student_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
 			this.student_fl.FormattingEnabled = true;
+			this.student_fl.IntegralHeight = false;
 			this.student_fl.Items.AddRange(new object[] {
             "Учащийся"});
 			this.student_fl.Location = new System.Drawing.Point(8, 51);
+			this.student_fl.MaxDropDownItems = 5;
 			this.student_fl.Name = "student_fl";
 			this.student_fl.Size = new System.Drawing.Size(207, 36);
 			this.student_fl.TabIndex = 2;
@@ -212,12 +220,17 @@
 			// 
 			// group_fl
 			// 
+			this.group_fl.AutoCompleteCustomSource.AddRange(new string[] {
+            "Группа"});
 			this.group_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.group_fl.DropDownHeight = 150;
 			this.group_fl.Enabled = false;
 			this.group_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.group_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
 			this.group_fl.FormattingEnabled = true;
+			this.group_fl.IntegralHeight = false;
 			this.group_fl.Location = new System.Drawing.Point(8, 9);
+			this.group_fl.MaxDropDownItems = 5;
 			this.group_fl.Name = "group_fl";
 			this.group_fl.Size = new System.Drawing.Size(207, 36);
 			this.group_fl.TabIndex = 1;
