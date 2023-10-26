@@ -11,8 +11,6 @@ namespace TeamLogbook
 {
     public partial class Home : Form
     {
-		private bool use_local_password = true;
-		private string local_password = "11110000"; // локальный пароль
 		private Form form; // окно для различных форм
 
 		DBController db_controller = new DBController();
@@ -176,13 +174,6 @@ namespace TeamLogbook
 		}
 
 
-		private void btn_change_format_Click(object sender, EventArgs e)
-		{
-			PanelForm(new ExcelLoadForms());
-			filters_panel(false);
-			main_panel(false);
-		}
-
 		private void btn_clear_all_Click(object sender, EventArgs e)
 		{
 			MessageBox.Show(form_panel.Controls[0].Text);
@@ -190,6 +181,7 @@ namespace TeamLogbook
 
 		private void btn_save_Click(object sender, EventArgs e)
 		{
+			db_controller.save();
 			save(db_controller.get_value_from_db("CurrentFile"), true);
 		}
 
@@ -198,12 +190,13 @@ namespace TeamLogbook
 			if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
 				return;
 
+			db_controller.save();
 			save(saveFileDialog1.FileName.ToString(), true);
 		}
 
 		private void autosave(object sender, ElapsedEventArgs e)
 		{
-			MessageBox.Show("Autosave "+ db_controller.get_value_from_db("SavePath"));
+			db_controller.save();
 			save(db_controller.get_value_from_db("SavePath") + "\\teamlogbook-autosave.xlsx", false);
 		}
 

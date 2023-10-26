@@ -43,7 +43,7 @@ namespace TeamLogbook
 						if (dataGridView.Rows[row].Cells[col].Value != null)
 						{
 							string value = dataGridView.Rows[row].Cells[col].Value.ToString(); // значение
-							if (value == "н.а") miss_amount++;
+							if (value == "н") miss_amount++;
 						}
 					}
 					miss[row] = miss_amount;

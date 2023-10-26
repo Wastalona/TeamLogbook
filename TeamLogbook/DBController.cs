@@ -1,4 +1,6 @@
 ﻿using MySqlX.XDevAPI.Common;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
@@ -209,6 +211,32 @@ namespace TeamLogbook
 			}
 		}
 
+		public void insert_mark(Record record)
+		{
+			openConnection();
+			try
+			{
+				string query = "INSERT INTO Marks ([Student], [Lesson], [MarkDate], [Mark], [Miss], [Group]) VALUES (@Student, @Lesson, @MarkDate, @Mark, @Miss, @Group);";
+				OleDbCommand dbCmd = new OleDbCommand(query, myConnection);
+				dbCmd.Parameters.AddWithValue("@Student", record.Name);
+				dbCmd.Parameters.AddWithValue("@Lesson", record.Lesson);
+				dbCmd.Parameters.AddWithValue("@MarkDate", record.Date);
+				dbCmd.Parameters.AddWithValue("@Mark", record.Mark);
+				dbCmd.Parameters.AddWithValue("@Miss", record.Miss);
+				dbCmd.Parameters.AddWithValue("@Group", record.Group);
+
+				dbCmd.ExecuteNonQuery();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Произошла ошибка при загрузке в базу данных: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				closeConnection();
+			}
+		}
+
 		public string get_value_from_db(string column)
 		{
 			openConnection();
@@ -233,31 +261,46 @@ namespace TeamLogbook
 			}
 		}
 
-
-		public void SaveNewPassword(string password)
+		public void save()
 		{
-			if (!string.IsNullOrEmpty(password))
+			string filePath=get_value_from_db("CurrentFile");
+			// Открываем файл
+			using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
 			{
-				openConnection();
+				IWorkbook workbook = new XSSFWorkbook(fileStream);
 
-				try
+				ISheet sheet = workbook.GetSheetAt(0);
+
+				IRow firstRow = sheet.GetRow(0);
+				if (firstRow != null)
 				{
-					OleDbCommand dbCmd = new OleDbCommand("UPDATE Config SET PasswordHash = ? WHERE id=1", myConnection);
-					dbCmd.Parameters.AddWithValue("@Password", password);
-					dbCmd.ExecuteNonQuery();
-					MessageBox.Show("Настройки сохранены", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				}
-				catch (Exception ex)
-				{
-					MessageBox.Show("Произошла ошибка при сохранении нового пароля: " + ex.Message, "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
-				finally
-				{
-					closeConnection();
+					// Проходимся по остальным строкам (начиная со второй)
+					for (int rowIdx = 1; rowIdx <= sheet.LastRowNum; rowIdx++)
+					{
+						Record db_str = new Record();
+						db_str.Group = sheet.GetRow(rowIdx).GetCell(0)?.ToString() ?? "";
+						db_str.Lesson = sheet.GetRow(rowIdx).GetCell(1)?.ToString() ?? "";
+						db_str.Name = sheet.GetRow(rowIdx).GetCell(2)?.ToString() ?? "";
+						IRow row = sheet.GetRow(rowIdx);
+						int rows = Int32.Parse(sheet.GetRow(rowIdx).PhysicalNumberOfCells.ToString());
+						if (row != null)
+						{
+							// Создаем строку для DataGridView
+							DataGridViewRow dataGridViewRow = new DataGridViewRow();
+
+							for (int i = 3; i < rows; i++)
+							{
+								db_str.Date = sheet.GetRow(0).Cells[i].ToString();
+								if (row.Cells[i].ToString() == "н")
+									db_str.Miss = 1;
+								else
+									db_str.Mark = int.TryParse(row.Cells[i].ToString(), out int mark) ? mark : 0; ;
+								insert_mark(db_str);
+							}
+						}
+					}
 				}
 			}
-			else
-				MessageBox.Show("Ошибка при записи пароля", "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 	}
 }

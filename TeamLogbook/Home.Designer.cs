@@ -54,7 +54,6 @@
 			this.btn_load = new System.Windows.Forms.Button();
 			this.btn_save = new System.Windows.Forms.Button();
 			this.btn_save_as = new System.Windows.Forms.Button();
-			this.btn_change_format = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
 			this.header.SuspendLayout();
@@ -63,7 +62,6 @@
 			this.fotter.SuspendLayout();
 			this.filter_panel.SuspendLayout();
 			this.body.SuspendLayout();
-			this.form_panel.SuspendLayout();
 			this.control_panel.SuspendLayout();
 			this.panel_main.SuspendLayout();
 			this.SuspendLayout();
@@ -281,7 +279,6 @@
 			// 
 			// form_panel
 			// 
-			this.form_panel.Controls.Add(this.btn_change_format);
 			this.form_panel.Location = new System.Drawing.Point(3, 3);
 			this.form_panel.Name = "form_panel";
 			this.form_panel.Size = new System.Drawing.Size(1003, 512);
@@ -379,20 +376,6 @@
 			this.btn_save_as.UseVisualStyleBackColor = false;
 			this.btn_save_as.Click += new System.EventHandler(this.btn_save_as_Click);
 			// 
-			// btn_change_format
-			// 
-			this.btn_change_format.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.btn_change_format.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btn_change_format.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.btn_change_format.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_change_format.Location = new System.Drawing.Point(793, 452);
-			this.btn_change_format.Name = "btn_change_format";
-			this.btn_change_format.Size = new System.Drawing.Size(197, 60);
-			this.btn_change_format.TabIndex = 3;
-			this.btn_change_format.Text = "Изменить формат";
-			this.btn_change_format.UseVisualStyleBackColor = false;
-			this.btn_change_format.Click += new System.EventHandler(this.btn_change_format_Click);
-			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
@@ -429,7 +412,6 @@
 			this.fotter.PerformLayout();
 			this.filter_panel.ResumeLayout(false);
 			this.body.ResumeLayout(false);
-			this.form_panel.ResumeLayout(false);
 			this.control_panel.ResumeLayout(false);
 			this.panel_main.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -459,7 +441,6 @@
 		private System.Windows.Forms.FlowLayoutPanel panel_main;
 		private System.Windows.Forms.Button btn_save;
 		private System.Windows.Forms.Button btn_apply_fl;
-		private System.Windows.Forms.Button btn_change_format;
 		private System.Windows.Forms.Button btn_settings;
 		private System.Windows.Forms.Button btn_load;
 		private System.Windows.Forms.Panel form_panel;
