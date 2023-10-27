@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Timers;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace TeamLogbook
@@ -64,6 +64,7 @@ namespace TeamLogbook
 			PanelForm(new Main());
 			btn_save.Enabled = false;
 			btn_save_as.Enabled = false;
+			lb_save.Hide();
 
 			int interval = Int32.Parse(db_controller.get_value_from_db("Range"));
 			if (interval > 0)
@@ -198,35 +199,61 @@ namespace TeamLogbook
 		}
 
 		// сохранения
-		private void btn_save_Click(object sender, EventArgs e)
+		private async void btn_save_Click(object sender, EventArgs e)
 		{
-			db_controller.save();
-			save(db_controller.get_value_from_db("CurrentFile"), true);
+			lb_save.Show();
+			await Task.Run(() => db_controller.save());// Вызываем сохранение в фоновом потоке
+
+			this.Invoke((MethodInvoker)delegate
+			{
+				// Код для обновления UI
+				lb_save.Text = "Сохранено";
+				lb_save.Hide();
+				lb_save.Text = "Сохранение...";
+			});
+			save(db_controller.get_value_from_db("CurrentFile"));
 		}
 
-		private void btn_save_as_Click(object sender, EventArgs e)
+		private async void btn_save_as_Click(object sender, EventArgs e)
 		{
 			if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
 				return;
 
-			db_controller.save();
-			save(saveFileDialog1.FileName.ToString(), true);
+			lb_save.Show();
+			await Task.Run(() => db_controller.save());// Вызываем сохранение в фоновом потоке
+
+			this.Invoke((MethodInvoker)delegate
+			{
+				// Код для обновления UI
+				lb_save.Text = "Сохранено";
+				lb_save.Hide();
+				lb_save.Text = "Сохранение...";
+			});
+
+			save(saveFileDialog1.FileName.ToString());
 		}
 
-		private void autosave(object sender, ElapsedEventArgs e)
+		private async void autosave(object sender, ElapsedEventArgs e)
 		{
-			db_controller.save();
-			save(db_controller.get_value_from_db("SavePath") + "\\teamlogbook-autosave.xlsx", false);
+			lb_save.Show();
+			await Task.Run(() => db_controller.save());// Вызываем сохранение в фоновом потоке
+
+			this.Invoke((MethodInvoker)delegate
+			{
+				// Код для обновления UI
+				lb_save.Text = "Сохранено";
+				lb_save.Hide();
+				lb_save.Text = "Сохранение...";
+			});
+			save(db_controller.get_value_from_db("SavePath") + "\\teamlogbook-autosave.xlsx");
 		}
 
-		private void save(string filename, bool message)
+		private void save(string filename)
 		{
 			FileManager fileManager = new FileManager(filename);
 			DataGridView dg = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
 
 			fileManager.ExportToExcel(dg);
-			if (message)
-				MessageBox.Show("Файл сохранен", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		// применение фильтров

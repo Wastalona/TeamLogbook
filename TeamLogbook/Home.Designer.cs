@@ -56,6 +56,7 @@
 			this.btn_save_as = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.lb_save = new System.Windows.Forms.Label();
 			this.header.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.icon)).BeginInit();
 			this.menu.SuspendLayout();
@@ -245,6 +246,7 @@
 			// fotter
 			// 
 			this.fotter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
+			this.fotter.Controls.Add(this.lb_save);
 			this.fotter.Controls.Add(this.license_lb);
 			this.fotter.Controls.Add(this.version_lb);
 			this.fotter.Location = new System.Drawing.Point(-1, 623);
@@ -405,6 +407,18 @@
 			this.saveFileDialog1.FileName = "save.xlsx";
 			this.saveFileDialog1.Title = "Сохранение файла";
 			// 
+			// lb_save
+			// 
+			this.lb_save.AutoSize = true;
+			this.lb_save.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
+			this.lb_save.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 8F, System.Drawing.FontStyle.Bold);
+			this.lb_save.ForeColor = System.Drawing.Color.Black;
+			this.lb_save.Location = new System.Drawing.Point(1073, 34);
+			this.lb_save.Name = "lb_save";
+			this.lb_save.Size = new System.Drawing.Size(85, 15);
+			this.lb_save.TabIndex = 2;
+			this.lb_save.Text = "сохранение...";
+			// 
 			// Home
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -466,6 +480,7 @@
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.Button btn_save_as;
+		private System.Windows.Forms.Label lb_save;
 	}
 }
 
