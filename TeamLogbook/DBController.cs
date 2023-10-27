@@ -1,8 +1,13 @@
-﻿using MySqlX.XDevAPI.Common;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using MathNet.Numerics.Distributions;
+using MySqlX.XDevAPI.Common;
+using NPOI.SS.UserModel;
+using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -209,6 +214,44 @@ namespace TeamLogbook
 			}
 		}
 
+		public void insert_mark(Record record)
+		{
+			openConnection();
+			try
+			{
+				// Проверка на существующие записи с таким же учеником, предметом и датой
+				string checkQuery = "SELECT COUNT(*) FROM Marks WHERE [Student] = @Student AND [Lesson] = @Lesson AND [MarkDate] = @MarkDate";
+				OleDbCommand checkCmd = new OleDbCommand(checkQuery, myConnection);
+				checkCmd.Parameters.AddWithValue("@Student", record.Name);
+				checkCmd.Parameters.AddWithValue("@Lesson", record.Lesson);
+				checkCmd.Parameters.AddWithValue("@MarkDate", record.Date);
+				int count = Convert.ToInt32(checkCmd.ExecuteScalar());
+
+				if (count == 0)
+				{
+					// Если совпадающих записей нет, выполняем вставку
+					string insertQuery = "INSERT INTO Marks ([Student], [Lesson], [MarkDate], [Mark], [Miss], [Group]) VALUES (@Student, @Lesson, @MarkDate, @Mark, @Miss, @Group);";
+					OleDbCommand dbCmd = new OleDbCommand(insertQuery, myConnection);
+					dbCmd.Parameters.AddWithValue("@Student", record.Name);
+					dbCmd.Parameters.AddWithValue("@Lesson", record.Lesson);
+					dbCmd.Parameters.AddWithValue("@MarkDate", record.Date);
+					dbCmd.Parameters.AddWithValue("@Mark", record.Mark);
+					dbCmd.Parameters.AddWithValue("@Miss", record.Miss);
+					dbCmd.Parameters.AddWithValue("@Group", record.Group);
+					
+					dbCmd.ExecuteNonQuery();
+				}
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Произошла ошибка при загрузке в базу данных: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				closeConnection();
+			}
+		}
+
 		public string get_value_from_db(string column)
 		{
 			openConnection();
@@ -234,30 +277,135 @@ namespace TeamLogbook
 		}
 
 
-		public void SaveNewPassword(string password)
+		public string[] get_values_from_db(string column, string table)
 		{
-			if (!string.IsNullOrEmpty(password))
-			{
-				openConnection();
+			openConnection();
 
-				try
+			string[] result = null;
+			try
+			{
+				OleDbCommand dbCmd = new OleDbCommand("SELECT DISTINCT [" + column + "] FROM [" + table + "]", myConnection);
+				List<string> data = new List<string>();
+
+				OleDbDataReader reader = dbCmd.ExecuteReader();
+				while (reader.Read())
 				{
-					OleDbCommand dbCmd = new OleDbCommand("UPDATE Config SET PasswordHash = ? WHERE id=1", myConnection);
-					dbCmd.Parameters.AddWithValue("@Password", password);
-					dbCmd.ExecuteNonQuery();
-					MessageBox.Show("Настройки сохранены", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					data.Add(reader[column].ToString());
 				}
-				catch (Exception ex)
+
+				result = data.ToArray();
+
+				return result;
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Произошла ошибка при загрузке фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				closeConnection();
+			}
+			return result;
+		}
+
+		
+		public void save()
+		{
+			string filePath=get_value_from_db("CurrentFile");
+			// Открываем файл
+			using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+			{
+				IWorkbook workbook = new XSSFWorkbook(fileStream);
+
+				ISheet sheet = workbook.GetSheetAt(0);
+
+				IRow firstRow = sheet.GetRow(0);
+				if (firstRow != null)
 				{
-					MessageBox.Show("Произошла ошибка при сохранении нового пароля: " + ex.Message, "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				}
-				finally
-				{
-					closeConnection();
+					// Проходимся по остальным строкам (начиная со второй)
+					for (int rowIdx = 1; rowIdx <= sheet.LastRowNum; rowIdx++)
+					{
+						Record db_str = new Record();
+						db_str.Group = sheet.GetRow(rowIdx).GetCell(0)?.ToString() ?? "";
+						db_str.Lesson = sheet.GetRow(rowIdx).GetCell(1)?.ToString() ?? "";
+						db_str.Name = sheet.GetRow(rowIdx).GetCell(2)?.ToString() ?? "";
+						IRow row = sheet.GetRow(rowIdx);
+						int rows = Int32.Parse(sheet.GetRow(rowIdx).PhysicalNumberOfCells.ToString());
+						if (row != null)
+						{
+							// Создаем строку для DataGridView
+							DataGridViewRow dataGridViewRow = new DataGridViewRow();
+
+							for (int i = 3; i < rows; i++)
+							{
+								db_str.Date = sheet.GetRow(0).Cells[i].ToString();
+								if (row.Cells[i].ToString() == "н")
+									db_str.Miss = 1;
+								else
+									db_str.Mark = int.TryParse(row.Cells[i].ToString(), out int mark) ? mark : 0; ;
+								insert_mark(db_str);
+							}
+						}
+					}
 				}
 			}
-			else
-				MessageBox.Show("Ошибка при записи пароля", "Ошибка сохранения", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		public void apply_filters(DataGridView dg, string[] filters)
+		{
+			dg.Rows.Clear();
+			dg.Columns.Clear();
+
+			// Добавляем столбцы для DataGridView
+			dg.Columns.Add("Группа", "Группа");
+			dg.Columns.Add("Предмет", "Предмет");
+			dg.Columns.Add("Учащийся", "Учащийся");
+
+			openConnection();
+
+			try
+			{
+				OleDbCommand dbCmd = new OleDbCommand("SELECT * FROM Marks WHERE [Group]=@gr AND [Student]=@st AND [Lesson]=@ls", myConnection);
+				dbCmd.Parameters.AddWithValue("@gr", filters[0]);
+				dbCmd.Parameters.AddWithValue("@st", filters[2]);
+				dbCmd.Parameters.AddWithValue("@ls", filters[1]);
+
+				OleDbDataReader reader = dbCmd.ExecuteReader();
+				while (reader.Read())
+				{
+					string group = reader["Group"].ToString();
+					string lesson = reader["Lesson"].ToString();
+					string student = reader["Student"].ToString();
+					string date = reader["MarkDate"].ToString();
+					string mark = reader["Mark"].ToString();
+					string miss = reader["Miss"].ToString();
+
+					// Если столбец с такой датой еще не существует, добавляем его
+					if (!dg.Columns.Contains(date))
+					{
+						dg.Columns.Add(date, date);
+					}
+
+					// Добавляем строку с данными в DataGridView
+					DataGridViewRow row = new DataGridViewRow();
+					row.CreateCells(dg);
+					row.Cells[0].Value = group;
+					row.Cells[1].Value = lesson;
+					row.Cells[2].Value = student;
+					row.Cells[date].Value = mark;
+					dg.Rows.Add(row);
+				}
+
+				reader.Close();
+			}
+			catch (Exception ex)
+			{
+				MessageBox.Show("Произошла ошибка при применении фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			}
+			finally
+			{
+				closeConnection();
+			}
 		}
 	}
 }

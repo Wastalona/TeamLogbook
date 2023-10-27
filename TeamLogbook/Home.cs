@@ -5,14 +5,13 @@ using System.Text;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Timers;
-using System.Threading;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace TeamLogbook
 {
     public partial class Home : Form
     {
-		private bool use_local_password = true;
-		private string local_password = "11110000"; // локальный пароль
 		private Form form; // окно для различных форм
 
 		DBController db_controller = new DBController();
@@ -40,17 +39,42 @@ namespace TeamLogbook
 			fm.Show();
 		}
 
+		private void load_filters()
+		{
+			string[] students = db_controller.get_values_from_db("Student", "Marks");
+			for (int i = 0; i < students.Length; i++)
+			{
+				student_fl.Items.Add(students[i]);
+			}
+			string[] groups = db_controller.get_values_from_db("Group", "Marks");
+			for (int i = 0; i < groups.Length; i++)
+			{
+				group_fl.Items.Add(groups[i]);
+			}
+			string[] lessons = db_controller.get_values_from_db("Lesson", "Marks");
+			for (int i = 0; i < lessons.Length; i++)
+			{
+				subject_fl.Items.Add(lessons[i]);
+			}
+		}
 
 		private void Home_Load(object sender, EventArgs e)
 		{
-			System.Timers.Timer timer = new System.Timers.Timer(); // Используйте полное имя класса
-
-			timer.Interval = Int32.Parse(db_controller.get_value_from_db("Range")) * 60 * 1000; // Установка интервала в миллисекундах
-			timer.Elapsed += autosave;
-
+			load_filters();
 			PanelForm(new Main());
 			btn_save.Enabled = false;
-			timer.Start(); // Обратите внимание, что "Start" с заглавной буквы
+			btn_save_as.Enabled = false;
+			lb_save.Hide();
+
+			int interval = Int32.Parse(db_controller.get_value_from_db("Range"));
+			if (interval > 0)
+			{
+				System.Timers.Timer timer = new System.Timers.Timer(); // Используйте полное имя класса
+
+				timer.Interval = interval * 60 * 1000; // Установка интервала в миллисекундах
+				timer.Elapsed += autosave;
+				timer.Start(); // Обратите внимание, что "Start" с заглавной буквы
+			}
 		}
 
 
@@ -77,13 +101,13 @@ namespace TeamLogbook
 			if (is_active){
 				btn_load.Enabled = true;
 				btn_save.Enabled = true;
-				btn_change_format.Enabled = true;
+				btn_save_as.Enabled = true;
 				btn_settings.Enabled = true;
 			}
 			else{ 
 				btn_load.Enabled = false;
 				btn_save.Enabled = false;
-				btn_change_format.Enabled = false;
+				btn_save_as.Enabled = false;
 				btn_settings.Enabled = false;
 			}
 		}
@@ -95,6 +119,7 @@ namespace TeamLogbook
 			filters_panel(false);
 			main_panel(true);
 			btn_save.Enabled = false;
+			btn_save_as.Enabled = false;
 		}
 
 		private void btn_log_Click(object sender, EventArgs e)
@@ -173,46 +198,80 @@ namespace TeamLogbook
 				MessageBox.Show("Файл имеет неверный формат", "Ошибка загурзки файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
-
-		private void btn_change_format_Click(object sender, EventArgs e)
+		// сохранения
+		private async void btn_save_Click(object sender, EventArgs e)
 		{
-			PanelForm(new ExcelLoadForms());
-			filters_panel(false);
-			main_panel(false);
+			lb_save.Show();
+			await Task.Run(() => db_controller.save());// Вызываем сохранение в фоновом потоке
+
+			this.Invoke((MethodInvoker)delegate
+			{
+				// Код для обновления UI
+				lb_save.Text = "Сохранено";
+				lb_save.Hide();
+				lb_save.Text = "Сохранение...";
+			});
+			save(db_controller.get_value_from_db("CurrentFile"));
 		}
 
-		private void btn_clear_all_Click(object sender, EventArgs e)
-		{
-			MessageBox.Show(form_panel.Controls[0].Text);
-		}
-
-		private void btn_save_Click(object sender, EventArgs e)
-		{
-			save(db_controller.get_value_from_db("CurrentFile"), true);
-		}
-
-		private void btn_save_as_Click(object sender, EventArgs e)
+		private async void btn_save_as_Click(object sender, EventArgs e)
 		{
 			if (saveFileDialog1.ShowDialog() == DialogResult.Cancel)
 				return;
 
-			save(saveFileDialog1.FileName.ToString(), true);
+			lb_save.Show();
+			await Task.Run(() => db_controller.save());// Вызываем сохранение в фоновом потоке
+
+			this.Invoke((MethodInvoker)delegate
+			{
+				// Код для обновления UI
+				lb_save.Text = "Сохранено";
+				lb_save.Hide();
+				lb_save.Text = "Сохранение...";
+			});
+
+			save(saveFileDialog1.FileName.ToString());
 		}
 
-		private void autosave(object sender, ElapsedEventArgs e)
+		private async void autosave(object sender, ElapsedEventArgs e)
 		{
-			MessageBox.Show("Autosave "+ db_controller.get_value_from_db("SavePath"));
-			save(db_controller.get_value_from_db("SavePath") + "\\teamlogbook-autosave.xlsx", false);
+			lb_save.Show();
+			await Task.Run(() => db_controller.save());// Вызываем сохранение в фоновом потоке
+
+			this.Invoke((MethodInvoker)delegate
+			{
+				// Код для обновления UI
+				lb_save.Text = "Сохранено";
+				lb_save.Hide();
+				lb_save.Text = "Сохранение...";
+			});
+			save(db_controller.get_value_from_db("SavePath") + "\\teamlogbook-autosave.xlsx");
 		}
 
-		private void save(string filename, bool message)
+		private void save(string filename)
 		{
 			FileManager fileManager = new FileManager(filename);
 			DataGridView dg = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
 
 			fileManager.ExportToExcel(dg);
-			if (message)
-				MessageBox.Show("Файл сохранен", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
+		// применение фильтров
+		private void btn_apply_fl_Click(object sender, EventArgs e)
+		{
+			string student = student_fl.Text;
+			string group = group_fl.Text;
+			string subject = subject_fl.Text;
+
+			if (student == "Учащийся")
+				student = "[Group]=@gr AND [Lesson]=@ls";
+			if (group == "Группа")
+				group = "[Student]=@st AND [Lesson]=@ls";
+			if (subject == "Предмет")
+				subject = "[Group]=@gr AND [Student]=@st";
+
+			DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
+			db_controller.apply_filters(dgv, new string[] { group, subject, student });
 		}
 	}
 }

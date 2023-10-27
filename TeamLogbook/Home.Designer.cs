@@ -54,16 +54,15 @@
 			this.btn_load = new System.Windows.Forms.Button();
 			this.btn_save = new System.Windows.Forms.Button();
 			this.btn_save_as = new System.Windows.Forms.Button();
-			this.btn_change_format = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+			this.lb_save = new System.Windows.Forms.Label();
 			this.header.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.icon)).BeginInit();
 			this.menu.SuspendLayout();
 			this.fotter.SuspendLayout();
 			this.filter_panel.SuspendLayout();
 			this.body.SuspendLayout();
-			this.form_panel.SuspendLayout();
 			this.control_panel.SuspendLayout();
 			this.panel_main.SuspendLayout();
 			this.SuspendLayout();
@@ -186,12 +185,19 @@
 			// 
 			// subject_fl
 			// 
+			this.subject_fl.AutoCompleteCustomSource.AddRange(new string[] {
+            "Предмет"});
 			this.subject_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.subject_fl.DropDownHeight = 150;
 			this.subject_fl.Enabled = false;
 			this.subject_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.subject_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
 			this.subject_fl.FormattingEnabled = true;
+			this.subject_fl.IntegralHeight = false;
+			this.subject_fl.Items.AddRange(new object[] {
+            "Предмет"});
 			this.subject_fl.Location = new System.Drawing.Point(8, 93);
+			this.subject_fl.MaxDropDownItems = 5;
 			this.subject_fl.Name = "subject_fl";
 			this.subject_fl.Size = new System.Drawing.Size(207, 36);
 			this.subject_fl.TabIndex = 3;
@@ -199,14 +205,19 @@
 			// 
 			// student_fl
 			// 
+			this.student_fl.AutoCompleteCustomSource.AddRange(new string[] {
+            "Учащийся"});
 			this.student_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.student_fl.DropDownHeight = 150;
 			this.student_fl.Enabled = false;
 			this.student_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.student_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
 			this.student_fl.FormattingEnabled = true;
+			this.student_fl.IntegralHeight = false;
 			this.student_fl.Items.AddRange(new object[] {
             "Учащийся"});
 			this.student_fl.Location = new System.Drawing.Point(8, 51);
+			this.student_fl.MaxDropDownItems = 5;
 			this.student_fl.Name = "student_fl";
 			this.student_fl.Size = new System.Drawing.Size(207, 36);
 			this.student_fl.TabIndex = 2;
@@ -214,12 +225,19 @@
 			// 
 			// group_fl
 			// 
+			this.group_fl.AutoCompleteCustomSource.AddRange(new string[] {
+            "Группа"});
 			this.group_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.group_fl.DropDownHeight = 150;
 			this.group_fl.Enabled = false;
 			this.group_fl.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.group_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
 			this.group_fl.FormattingEnabled = true;
+			this.group_fl.IntegralHeight = false;
+			this.group_fl.Items.AddRange(new object[] {
+            "Группа"});
 			this.group_fl.Location = new System.Drawing.Point(8, 9);
+			this.group_fl.MaxDropDownItems = 5;
 			this.group_fl.Name = "group_fl";
 			this.group_fl.Size = new System.Drawing.Size(207, 36);
 			this.group_fl.TabIndex = 1;
@@ -228,6 +246,7 @@
 			// fotter
 			// 
 			this.fotter.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
+			this.fotter.Controls.Add(this.lb_save);
 			this.fotter.Controls.Add(this.license_lb);
 			this.fotter.Controls.Add(this.version_lb);
 			this.fotter.Location = new System.Drawing.Point(-1, 623);
@@ -281,7 +300,6 @@
 			// 
 			// form_panel
 			// 
-			this.form_panel.Controls.Add(this.btn_change_format);
 			this.form_panel.Location = new System.Drawing.Point(3, 3);
 			this.form_panel.Name = "form_panel";
 			this.form_panel.Size = new System.Drawing.Size(1003, 512);
@@ -335,7 +353,7 @@
 			this.btn_apply_fl.TabIndex = 2;
 			this.btn_apply_fl.Text = "Применить фильтры";
 			this.btn_apply_fl.UseVisualStyleBackColor = false;
-			this.btn_apply_fl.Click += new System.EventHandler(this.btn_clear_all_Click);
+			this.btn_apply_fl.Click += new System.EventHandler(this.btn_apply_fl_Click);
 			// 
 			// btn_load
 			// 
@@ -379,20 +397,6 @@
 			this.btn_save_as.UseVisualStyleBackColor = false;
 			this.btn_save_as.Click += new System.EventHandler(this.btn_save_as_Click);
 			// 
-			// btn_change_format
-			// 
-			this.btn_change_format.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.btn_change_format.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btn_change_format.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.btn_change_format.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_change_format.Location = new System.Drawing.Point(793, 452);
-			this.btn_change_format.Name = "btn_change_format";
-			this.btn_change_format.Size = new System.Drawing.Size(197, 60);
-			this.btn_change_format.TabIndex = 3;
-			this.btn_change_format.Text = "Изменить формат";
-			this.btn_change_format.UseVisualStyleBackColor = false;
-			this.btn_change_format.Click += new System.EventHandler(this.btn_change_format_Click);
-			// 
 			// openFileDialog1
 			// 
 			this.openFileDialog1.FileName = "openFileDialog1";
@@ -402,6 +406,18 @@
 			this.saveFileDialog1.DefaultExt = "xlsx";
 			this.saveFileDialog1.FileName = "save.xlsx";
 			this.saveFileDialog1.Title = "Сохранение файла";
+			// 
+			// lb_save
+			// 
+			this.lb_save.AutoSize = true;
+			this.lb_save.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
+			this.lb_save.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 8F, System.Drawing.FontStyle.Bold);
+			this.lb_save.ForeColor = System.Drawing.Color.Black;
+			this.lb_save.Location = new System.Drawing.Point(1073, 34);
+			this.lb_save.Name = "lb_save";
+			this.lb_save.Size = new System.Drawing.Size(85, 15);
+			this.lb_save.TabIndex = 2;
+			this.lb_save.Text = "сохранение...";
 			// 
 			// Home
 			// 
@@ -429,7 +445,6 @@
 			this.fotter.PerformLayout();
 			this.filter_panel.ResumeLayout(false);
 			this.body.ResumeLayout(false);
-			this.form_panel.ResumeLayout(false);
 			this.control_panel.ResumeLayout(false);
 			this.panel_main.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -459,13 +474,13 @@
 		private System.Windows.Forms.FlowLayoutPanel panel_main;
 		private System.Windows.Forms.Button btn_save;
 		private System.Windows.Forms.Button btn_apply_fl;
-		private System.Windows.Forms.Button btn_change_format;
 		private System.Windows.Forms.Button btn_settings;
 		private System.Windows.Forms.Button btn_load;
 		private System.Windows.Forms.Panel form_panel;
 		private System.Windows.Forms.OpenFileDialog openFileDialog1;
 		private System.Windows.Forms.SaveFileDialog saveFileDialog1;
 		private System.Windows.Forms.Button btn_save_as;
+		private System.Windows.Forms.Label lb_save;
 	}
 }
 

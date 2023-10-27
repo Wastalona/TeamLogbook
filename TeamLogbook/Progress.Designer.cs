@@ -28,22 +28,41 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.dataGridView = new System.Windows.Forms.DataGridView();
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.SuspendLayout();
+			// 
+			// dataGridView
+			// 
+			this.dataGridView.AllowDrop = true;
+			this.dataGridView.AllowUserToOrderColumns = true;
+			this.dataGridView.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(246)))), ((int)(((byte)(244)))));
+			this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this.dataGridView.Location = new System.Drawing.Point(12, 12);
+			this.dataGridView.Name = "dataGridView";
+			this.dataGridView.ReadOnly = true;
+			this.dataGridView.Size = new System.Drawing.Size(963, 495);
+			this.dataGridView.TabIndex = 6;
 			// 
 			// Progress
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(987, 519);
+			this.Controls.Add(this.dataGridView);
 			this.MaximumSize = new System.Drawing.Size(1003, 558);
 			this.MinimumSize = new System.Drawing.Size(1003, 558);
 			this.Name = "Progress";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Progress";
+			this.Load += new System.EventHandler(this.Progress_Load);
+			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
 			this.ResumeLayout(false);
 
 		}
 
 		#endregion
+
+		private System.Windows.Forms.DataGridView dataGridView;
 	}
 }

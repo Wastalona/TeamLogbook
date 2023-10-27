@@ -108,7 +108,7 @@ namespace TeamLogbook
 					MessageBox.Show("Неверный интревал автосохранений", "Ошибка записи", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			else
-				db_controller.SaveAutosavesSettings(false, box_save_path.Text, box_range.Text);
+				db_controller.SaveAutosavesSettings(false, box_save_path.Text, "0");
 		}
 
 		private void UpdateAutosavesBlock(object sender, EventArgs e)
