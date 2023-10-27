@@ -70,11 +70,6 @@ namespace TeamLogbook
 			}
 		}
 
-		public void load_filters()
-		{
-
-		}
-
 
 		public string[] getFileInfo()
 		{

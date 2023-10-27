@@ -193,6 +193,8 @@
 			this.subject_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
 			this.subject_fl.FormattingEnabled = true;
 			this.subject_fl.IntegralHeight = false;
+			this.subject_fl.Items.AddRange(new object[] {
+            "Предмет"});
 			this.subject_fl.Location = new System.Drawing.Point(8, 93);
 			this.subject_fl.MaxDropDownItems = 5;
 			this.subject_fl.Name = "subject_fl";
@@ -202,6 +204,8 @@
 			// 
 			// student_fl
 			// 
+			this.student_fl.AutoCompleteCustomSource.AddRange(new string[] {
+            "Учащийся"});
 			this.student_fl.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
 			this.student_fl.DropDownHeight = 150;
 			this.student_fl.Enabled = false;
@@ -229,6 +233,8 @@
 			this.group_fl.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
 			this.group_fl.FormattingEnabled = true;
 			this.group_fl.IntegralHeight = false;
+			this.group_fl.Items.AddRange(new object[] {
+            "Группа"});
 			this.group_fl.Location = new System.Drawing.Point(8, 9);
 			this.group_fl.MaxDropDownItems = 5;
 			this.group_fl.Name = "group_fl";
@@ -345,7 +351,7 @@
 			this.btn_apply_fl.TabIndex = 2;
 			this.btn_apply_fl.Text = "Применить фильтры";
 			this.btn_apply_fl.UseVisualStyleBackColor = false;
-			this.btn_apply_fl.Click += new System.EventHandler(this.btn_clear_all_Click);
+			this.btn_apply_fl.Click += new System.EventHandler(this.btn_apply_fl_Click);
 			// 
 			// btn_load
 			// 

@@ -61,16 +61,19 @@ namespace TeamLogbook
 		private void Home_Load(object sender, EventArgs e)
 		{
 			load_filters();
-
-			System.Timers.Timer timer = new System.Timers.Timer(); // Используйте полное имя класса
-
-			timer.Interval = Int32.Parse(db_controller.get_value_from_db("Range")) * 60 * 1000; // Установка интервала в миллисекундах
-			timer.Elapsed += autosave;
-
 			PanelForm(new Main());
 			btn_save.Enabled = false;
 			btn_save_as.Enabled = false;
-			timer.Start(); // Обратите внимание, что "Start" с заглавной буквы
+
+			int interval = Int32.Parse(db_controller.get_value_from_db("Range"));
+			if (interval > 0)
+			{
+				System.Timers.Timer timer = new System.Timers.Timer(); // Используйте полное имя класса
+
+				timer.Interval = interval * 60 * 1000; // Установка интервала в миллисекундах
+				timer.Elapsed += autosave;
+				timer.Start(); // Обратите внимание, что "Start" с заглавной буквы
+			}
 		}
 
 
@@ -194,12 +197,7 @@ namespace TeamLogbook
 				MessageBox.Show("Файл имеет неверный формат", "Ошибка загурзки файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
-
-		private void btn_clear_all_Click(object sender, EventArgs e)
-		{
-			MessageBox.Show(form_panel.Controls[0].Text);
-		}
-
+		// сохранения
 		private void btn_save_Click(object sender, EventArgs e)
 		{
 			db_controller.save();
@@ -229,6 +227,24 @@ namespace TeamLogbook
 			fileManager.ExportToExcel(dg);
 			if (message)
 				MessageBox.Show("Файл сохранен", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		}
+
+		// применение фильтров
+		private void btn_apply_fl_Click(object sender, EventArgs e)
+		{
+			string student = student_fl.Text;
+			string group = group_fl.Text;
+			string subject = subject_fl.Text;
+
+			if (student == "Учащийся")
+				student = "[Group]=@gr AND [Lesson]=@ls";
+			if (group == "Группа")
+				group = "[Student]=@st AND [Lesson]=@ls";
+			if (subject == "Предмет")
+				subject = "[Group]=@gr AND [Student]=@st";
+
+			DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
+			db_controller.apply_filters(dgv, new string[] { group, subject, student });
 		}
 	}
 }

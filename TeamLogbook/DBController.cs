@@ -219,16 +219,28 @@ namespace TeamLogbook
 			openConnection();
 			try
 			{
-				string query = "INSERT INTO Marks ([Student], [Lesson], [MarkDate], [Mark], [Miss], [Group]) VALUES (@Student, @Lesson, @MarkDate, @Mark, @Miss, @Group);";
-				OleDbCommand dbCmd = new OleDbCommand(query, myConnection);
-				dbCmd.Parameters.AddWithValue("@Student", record.Name);
-				dbCmd.Parameters.AddWithValue("@Lesson", record.Lesson);
-				dbCmd.Parameters.AddWithValue("@MarkDate", record.Date);
-				dbCmd.Parameters.AddWithValue("@Mark", record.Mark);
-				dbCmd.Parameters.AddWithValue("@Miss", record.Miss);
-				dbCmd.Parameters.AddWithValue("@Group", record.Group);
+				// Проверка на существующие записи с таким же учеником, предметом и датой
+				string checkQuery = "SELECT COUNT(*) FROM Marks WHERE [Student] = @Student AND [Lesson] = @Lesson AND [MarkDate] = @MarkDate";
+				OleDbCommand checkCmd = new OleDbCommand(checkQuery, myConnection);
+				checkCmd.Parameters.AddWithValue("@Student", record.Name);
+				checkCmd.Parameters.AddWithValue("@Lesson", record.Lesson);
+				checkCmd.Parameters.AddWithValue("@MarkDate", record.Date);
+				int count = Convert.ToInt32(checkCmd.ExecuteScalar());
 
-				dbCmd.ExecuteNonQuery();
+				if (count == 0)
+				{
+					// Если совпадающих записей нет, выполняем вставку
+					string insertQuery = "INSERT INTO Marks ([Student], [Lesson], [MarkDate], [Mark], [Miss], [Group]) VALUES (@Student, @Lesson, @MarkDate, @Mark, @Miss, @Group);";
+					OleDbCommand dbCmd = new OleDbCommand(insertQuery, myConnection);
+					dbCmd.Parameters.AddWithValue("@Student", record.Name);
+					dbCmd.Parameters.AddWithValue("@Lesson", record.Lesson);
+					dbCmd.Parameters.AddWithValue("@MarkDate", record.Date);
+					dbCmd.Parameters.AddWithValue("@Mark", record.Mark);
+					dbCmd.Parameters.AddWithValue("@Miss", record.Miss);
+					dbCmd.Parameters.AddWithValue("@Group", record.Group);
+					
+					dbCmd.ExecuteNonQuery();
+				}
 			}
 			catch (Exception ex)
 			{
@@ -296,7 +308,7 @@ namespace TeamLogbook
 			return result;
 		}
 
-
+		
 		public void save()
 		{
 			string filePath=get_value_from_db("CurrentFile");
@@ -339,58 +351,61 @@ namespace TeamLogbook
 			}
 		}
 
-		public string[,] load_filters()
+		public void apply_filters(DataGridView dg, string[] filters)
 		{
-			openConnection();
+			dg.Rows.Clear();
+			dg.Columns.Clear();
 
-			string[,] result = null;
+			// Добавляем столбцы для DataGridView
+			dg.Columns.Add("Группа", "Группа");
+			dg.Columns.Add("Предмет", "Предмет");
+			dg.Columns.Add("Учащийся", "Учащийся");
+
+			openConnection();
 
 			try
 			{
-				OleDbCommand dbCmd = new OleDbCommand("SELECT DISTINCT [Student], [Lesson], [Group] FROM Marks", myConnection);
-				OleDbDataReader reader = dbCmd.ExecuteReader();
-				List<string> students = new List<string>();
-				List<string> lessons = new List<string>();
-				List<string> groups = new List<string>();
+				OleDbCommand dbCmd = new OleDbCommand("SELECT * FROM Marks WHERE [Group]=@gr AND [Student]=@st AND [Lesson]=@ls", myConnection);
+				dbCmd.Parameters.AddWithValue("@gr", filters[0]);
+				dbCmd.Parameters.AddWithValue("@st", filters[2]);
+				dbCmd.Parameters.AddWithValue("@ls", filters[1]);
 
+				OleDbDataReader reader = dbCmd.ExecuteReader();
 				while (reader.Read())
 				{
-					students.Add(reader["Student"].ToString());
-					lessons.Add(reader["Lesson"].ToString());
-					groups.Add(reader["Group"].ToString());
+					string group = reader["Group"].ToString();
+					string lesson = reader["Lesson"].ToString();
+					string student = reader["Student"].ToString();
+					string date = reader["MarkDate"].ToString();
+					string mark = reader["Mark"].ToString();
+					string miss = reader["Miss"].ToString();
+
+					// Если столбец с такой датой еще не существует, добавляем его
+					if (!dg.Columns.Contains(date))
+					{
+						dg.Columns.Add(date, date);
+					}
+
+					// Добавляем строку с данными в DataGridView
+					DataGridViewRow row = new DataGridViewRow();
+					row.CreateCells(dg);
+					row.Cells[0].Value = group;
+					row.Cells[1].Value = lesson;
+					row.Cells[2].Value = student;
+					row.Cells[date].Value = mark;
+					dg.Rows.Add(row);
 				}
 
 				reader.Close();
-
-				// Преобразование списков в массивы
-				groups = groups.Distinct().ToList();
-				lessons = lessons.Distinct().ToList();
-				students = students.Distinct().ToList();
-
-				int maxCount = Math.Max(groups.Count, Math.Max(lessons.Count, students.Count));
-				result = new string[maxCount, 3];
-
-				for (int i = 0; i < maxCount; i++)
-				{
-					if (i < groups.Count)
-						result[i, 0] = groups[i];
-					if (i < lessons.Count)
-						result[i, 1] = lessons[i];
-					if (i < students.Count)
-						result[i, 2] = students[i];
-				}
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show("Произошла ошибка при загрузке фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Произошла ошибка при применении фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			finally
 			{
 				closeConnection();
 			}
-
-			return result;
 		}
-
 	}
 }
