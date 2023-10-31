@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -21,21 +23,26 @@ namespace TeamLogbook
 		private void Log_Load(object sender, EventArgs e)
 		{
 			DBController db_controller = new DBController();
-			string path = db_controller.get_value_from_db("CurrentFile");
+			DataSet ds = new DataSet();
 
-			if (path.Length > 0)
+			db_controller.openConnection();
+
+			using (OleDbConnection connection = new OleDbConnection(db_controller.connectionString))
 			{
-				FileManager fileManager = new FileManager(path);
-				dataGridView.Show();
-				try
+				connection.Open();
+				using (OleDbCommand cmd = new OleDbCommand("SELECT DISTINCT [Student], [Lesson], [MarkDate], [Mark], [Miss], [Group] FROM Marks", connection))
 				{
-					fileManager.read_file(dataGridView);
+					using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(cmd))
+					{
+						dataAdapter.Fill(ds);
+						dataGridView.DataSource = ds.Tables[0];
+					}
 				}
-				catch (System.IO.IOException){
-					MessageBox.Show("Убедитесь, что файл не открыт в другой программе", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				} 
 			}
-			else dataGridView.Hide();
+
+			db_controller.closeConnection();
+
+			string path = db_controller.get_value_from_db("CurrentFile");
 		}
 
 		private void btn_add_col_Click(object sender, EventArgs e)

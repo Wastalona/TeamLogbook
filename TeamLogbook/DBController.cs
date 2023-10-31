@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentFormat.OpenXml.Office2013.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using MathNet.Numerics.Distributions;
 using MySqlX.XDevAPI.Common;
 using NPOI.SS.UserModel;
@@ -6,8 +7,10 @@ using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -29,6 +32,11 @@ namespace TeamLogbook
 				byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
 				return Convert.ToBase64String(hashedBytes);
 			}
+		}
+
+		public string connectionString
+		{
+			get { return connectString; }
 		}
 
 		public void openConnection()
@@ -351,7 +359,7 @@ namespace TeamLogbook
 			}
 		}
 
-		public void apply_filters(DataGridView dg, string[] filters)
+		public void apply_filters(DataGridView dg, string query, List<OleDbParameter> parameters, bool ans)
 		{
 			dg.Rows.Clear();
 			dg.Columns.Clear();
@@ -363,49 +371,65 @@ namespace TeamLogbook
 
 			openConnection();
 
-			try
+			//try
+			//{
+			OleDbCommand dbCmd = new OleDbCommand(query, myConnection);
+			if (ans)
 			{
-				OleDbCommand dbCmd = new OleDbCommand("SELECT * FROM Marks WHERE [Group]=@gr AND [Student]=@st AND [Lesson]=@ls", myConnection);
-				dbCmd.Parameters.AddWithValue("@gr", filters[0]);
-				dbCmd.Parameters.AddWithValue("@st", filters[2]);
-				dbCmd.Parameters.AddWithValue("@ls", filters[1]);
+				dbCmd.Parameters.Add(parameters[0]);
+				dbCmd.Parameters.Add(parameters[1]);
+				dbCmd.Parameters.Add(parameters[2]);
+			}
 
-				OleDbDataReader reader = dbCmd.ExecuteReader();
-				while (reader.Read())
+
+			OleDbDataReader reader = dbCmd.ExecuteReader();
+			while (reader.Read())
+			{
+				string group = reader["Group"].ToString();
+				string lesson = reader["Lesson"].ToString();
+				string student = reader["Student"].ToString();
+				string date = reader["MarkDate"].ToString();
+				string mark = reader["Mark"].ToString();
+				string miss = reader["Miss"].ToString();
+
+				// Проверяем, существует ли столбец с указанной датой
+				if (!dg.Columns.Contains(date))
 				{
-					string group = reader["Group"].ToString();
-					string lesson = reader["Lesson"].ToString();
-					string student = reader["Student"].ToString();
-					string date = reader["MarkDate"].ToString();
-					string mark = reader["Mark"].ToString();
-					string miss = reader["Miss"].ToString();
-
-					// Если столбец с такой датой еще не существует, добавляем его
-					if (!dg.Columns.Contains(date))
-					{
-						dg.Columns.Add(date, date);
-					}
-
-					// Добавляем строку с данными в DataGridView
-					DataGridViewRow row = new DataGridViewRow();
-					row.CreateCells(dg);
-					row.Cells[0].Value = group;
-					row.Cells[1].Value = lesson;
-					row.Cells[2].Value = student;
-					row.Cells[date].Value = mark;
-					dg.Rows.Add(row);
+					// Если столбца нет, создаем его
+					dg.Columns.Add(date, date);
 				}
 
-				reader.Close();
+				DataGridViewRow existingRow = null;
+
+				// Если строка не найдена, создаем новую
+				if (existingRow == null)
+				{
+					DataGridViewRow newRow = new DataGridViewRow();
+					newRow.CreateCells(dg);
+					newRow.Cells[0].Value = group;
+					newRow.Cells[1].Value = lesson;
+					newRow.Cells[2].Value = student;
+					existingRow = newRow;
+					dg.Rows.Add(existingRow);
+				}
+
+				// Обновляем ячейку с оценкой в соответствии с датой
+				existingRow.Cells[date].Value = mark;
 			}
-			catch (Exception ex)
-			{
-				MessageBox.Show("Произошла ошибка при применении фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			finally
-			{
-				closeConnection();
-			}
+
+
+			reader.Close();
 		}
+
+		/*catch (Exception ex)
+		{
+			MessageBox.Show("Произошла ошибка при применении фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+		finally
+		{
+			closeConnection();
+		}*/
 	}
+
 }
+//}

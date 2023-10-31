@@ -7,6 +7,9 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Data.OleDb;
+using DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace TeamLogbook
 {
@@ -172,6 +175,9 @@ namespace TeamLogbook
 
 				db_controller.update_config_value(filename, "CurrentFile");
 
+				upload();
+
+
 				if (form_panel.Controls[0].Text == "Log")
 				{
 					DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
@@ -196,6 +202,22 @@ namespace TeamLogbook
 			}
 			else
 				MessageBox.Show("Файл имеет неверный формат", "Ошибка загурзки файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		// загрузка
+		private async void upload()
+		{
+			lb_save.Text = "Файл загружается";
+			lb_save.Show();
+			await Task.Run(() => db_controller.save());// Вызываем сохранение в фоновом потоке
+
+			this.Invoke((MethodInvoker)delegate
+			{
+				// Код для обновления UI
+				lb_save.Text = "Загружено";
+				lb_save.Hide();
+				lb_save.Text = "Файл загружается";
+			});
 		}
 
 		// сохранения
@@ -263,15 +285,30 @@ namespace TeamLogbook
 			string group = group_fl.Text;
 			string subject = subject_fl.Text;
 
-			if (student == "Учащийся")
-				student = "[Group]=@gr AND [Lesson]=@ls";
-			if (group == "Группа")
-				group = "[Student]=@st AND [Lesson]=@ls";
-			if (subject == "Предмет")
-				subject = "[Group]=@gr AND [Student]=@st";
-
 			DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
-			db_controller.apply_filters(dgv, new string[] { group, subject, student });
+
+			BindingSource bindingSource = new BindingSource();
+			bindingSource.DataSource = dgv.DataSource; // Используйте исходный источник данных
+			dgv.DataSource = bindingSource;
+
+			List<string> conditions = new List<string>();
+
+			if (student != "Учащийся")
+				conditions.Add("Student=\'" + student + "\'");
+
+			if (group != "Группа")
+				conditions.Add("Group=\'" + group + "\'");
+
+			if (subject != "Предмет")
+				conditions.Add("Lesson=\'" + subject + "\'");
+
+			string condition = string.Join(" AND ", conditions);
+
+			if (!string.IsNullOrEmpty(condition))
+				bindingSource.Filter = condition;
+			else
+				bindingSource.Filter = "";
 		}
+
 	}
 }

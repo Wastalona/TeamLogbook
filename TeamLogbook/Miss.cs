@@ -28,7 +28,7 @@ namespace TeamLogbook
 			{
 				FileManager fileManager = new FileManager(path);
 				dataGridView.Show();
-				fileManager.read_file(dataGridView, "", "", "");
+				fileManager.read_file(dataGridView);
 
 				int[] miss = new int[dataGridView.Rows.Count];
 
