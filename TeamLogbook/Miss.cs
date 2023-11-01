@@ -9,6 +9,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using NPOI.SS.Formula.Functions;
+using System.Data.OleDb;
+using MathNet.Numerics.Distributions;
+using System.Xml.Linq;
 
 namespace TeamLogbook
 {
@@ -21,7 +24,7 @@ namespace TeamLogbook
 
 		private void Miss_Load(object sender, EventArgs e)
 		{
-			DBController db_controller = new DBController();
+			/*DBController db_controller = new DBController();
 			string path = db_controller.get_value_from_db("CurrentFile");
 
 			if (path.Length > 0)
@@ -68,7 +71,33 @@ namespace TeamLogbook
 
 				
 			}
-			else dataGridView.Hide();
+			else dataGridView.Hide();*/
+
+			DBController db_controller = new DBController();
+			DataSet ds = new DataSet();
+
+			db_controller.openConnection();
+
+			using (OleDbConnection connection = new OleDbConnection(db_controller.connectionString))
+			{
+				connection.Open();
+				using (OleDbCommand cmd = new OleDbCommand("SELECT DISTINCT [Student], [Lesson], [Group], [MarkDate], [Mark] FROM Marks WHERE Mark=\'н\'", connection))
+				{
+					using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(cmd))
+					{
+						dataAdapter.Fill(ds);
+						dataGridView.DataSource = ds.Tables[0];
+					}
+				}
+			}
+
+			/*BindingSource bindingSource = new BindingSource();
+			bindingSource.DataSource = dataGridView.DataSource; // Используйте исходный источник данных
+			dataGridView.DataSource = bindingSource;
+
+			bindingSource.Filter = "Mark=\'н\'";*/
+
+			db_controller.closeConnection();
 		}
 	}
 }

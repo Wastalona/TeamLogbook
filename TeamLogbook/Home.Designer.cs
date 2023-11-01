@@ -42,6 +42,7 @@
 			this.student_fl = new System.Windows.Forms.ComboBox();
 			this.group_fl = new System.Windows.Forms.ComboBox();
 			this.fotter = new System.Windows.Forms.Panel();
+			this.lb_save = new System.Windows.Forms.Label();
 			this.license_lb = new System.Windows.Forms.Label();
 			this.version_lb = new System.Windows.Forms.Label();
 			this.filter_panel = new System.Windows.Forms.Panel();
@@ -56,7 +57,6 @@
 			this.btn_save_as = new System.Windows.Forms.Button();
 			this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
 			this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-			this.lb_save = new System.Windows.Forms.Label();
 			this.header.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.icon)).BeginInit();
 			this.menu.SuspendLayout();
@@ -254,6 +254,18 @@
 			this.fotter.Size = new System.Drawing.Size(1265, 61);
 			this.fotter.TabIndex = 1;
 			// 
+			// lb_save
+			// 
+			this.lb_save.AutoSize = true;
+			this.lb_save.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
+			this.lb_save.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 8F, System.Drawing.FontStyle.Bold);
+			this.lb_save.ForeColor = System.Drawing.Color.Black;
+			this.lb_save.Location = new System.Drawing.Point(1073, 34);
+			this.lb_save.Name = "lb_save";
+			this.lb_save.Size = new System.Drawing.Size(85, 15);
+			this.lb_save.TabIndex = 2;
+			this.lb_save.Text = "сохранение...";
+			// 
 			// license_lb
 			// 
 			this.license_lb.AutoSize = true;
@@ -406,18 +418,6 @@
 			this.saveFileDialog1.DefaultExt = "xlsx";
 			this.saveFileDialog1.FileName = "save.xlsx";
 			this.saveFileDialog1.Title = "Сохранение файла";
-			// 
-			// lb_save
-			// 
-			this.lb_save.AutoSize = true;
-			this.lb_save.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(252)))), ((int)(((byte)(246)))));
-			this.lb_save.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 8F, System.Drawing.FontStyle.Bold);
-			this.lb_save.ForeColor = System.Drawing.Color.Black;
-			this.lb_save.Location = new System.Drawing.Point(1073, 34);
-			this.lb_save.Name = "lb_save";
-			this.lb_save.Size = new System.Drawing.Size(85, 15);
-			this.lb_save.TabIndex = 2;
-			this.lb_save.Text = "сохранение...";
 			// 
 			// Home
 			// 

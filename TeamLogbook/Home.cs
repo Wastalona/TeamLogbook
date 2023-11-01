@@ -44,17 +44,20 @@ namespace TeamLogbook
 
 		private void load_filters()
 		{
-			string[] students = db_controller.get_values_from_db("Student", "Marks");
-			for (int i = 0; i < students.Length; i++)
-			{
-				student_fl.Items.Add(students[i]);
-			}
 			string[] groups = db_controller.get_values_from_db("Group", "Marks");
+			string[] students = db_controller.get_values_from_db("Student", "Marks");
+			string[] lessons = db_controller.get_values_from_db("Lesson", "Marks");
+
 			for (int i = 0; i < groups.Length; i++)
 			{
 				group_fl.Items.Add(groups[i]);
 			}
-			string[] lessons = db_controller.get_values_from_db("Lesson", "Marks");
+
+			for (int i = 0; i < students.Length; i++)
+			{
+				student_fl.Items.Add(students[i]);
+			}
+
 			for (int i = 0; i < lessons.Length; i++)
 			{
 				subject_fl.Items.Add(lessons[i]);
@@ -175,7 +178,8 @@ namespace TeamLogbook
 
 				db_controller.update_config_value(filename, "CurrentFile");
 
-				upload();
+				MessageBox.Show("Программа начала загружать файл", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				db_controller.save();
 
 
 				if (form_panel.Controls[0].Text == "Log")
@@ -202,22 +206,6 @@ namespace TeamLogbook
 			}
 			else
 				MessageBox.Show("Файл имеет неверный формат", "Ошибка загурзки файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
-		}
-
-		// загрузка
-		private async void upload()
-		{
-			lb_save.Text = "Файл загружается";
-			lb_save.Show();
-			await Task.Run(() => db_controller.save());// Вызываем сохранение в фоновом потоке
-
-			this.Invoke((MethodInvoker)delegate
-			{
-				// Код для обновления UI
-				lb_save.Text = "Загружено";
-				lb_save.Hide();
-				lb_save.Text = "Файл загружается";
-			});
 		}
 
 		// сохранения

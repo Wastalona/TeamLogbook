@@ -238,14 +238,13 @@ namespace TeamLogbook
 				if (count == 0)
 				{
 					// Если совпадающих записей нет, выполняем вставку
-					string insertQuery = "INSERT INTO Marks ([Student], [Lesson], [MarkDate], [Mark], [Miss], [Group]) VALUES (@Student, @Lesson, @MarkDate, @Mark, @Miss, @Group);";
+					string insertQuery = "INSERT INTO Marks ([Student], [Lesson], [Group], [MarkDate], [Mark]) VALUES (@Student, @Lesson, @Group, @MarkDate, @Mark);";
 					OleDbCommand dbCmd = new OleDbCommand(insertQuery, myConnection);
 					dbCmd.Parameters.AddWithValue("@Student", record.Name);
 					dbCmd.Parameters.AddWithValue("@Lesson", record.Lesson);
+					dbCmd.Parameters.AddWithValue("@Group", record.Group);
 					dbCmd.Parameters.AddWithValue("@MarkDate", record.Date);
 					dbCmd.Parameters.AddWithValue("@Mark", record.Mark);
-					dbCmd.Parameters.AddWithValue("@Miss", record.Miss);
-					dbCmd.Parameters.AddWithValue("@Group", record.Group);
 					
 					dbCmd.ExecuteNonQuery();
 				}
@@ -290,8 +289,7 @@ namespace TeamLogbook
 			openConnection();
 
 			string[] result = null;
-			try
-			{
+			try {
 				OleDbCommand dbCmd = new OleDbCommand("SELECT DISTINCT [" + column + "] FROM [" + table + "]", myConnection);
 				List<string> data = new List<string>();
 
@@ -334,26 +332,12 @@ namespace TeamLogbook
 					for (int rowIdx = 1; rowIdx <= sheet.LastRowNum; rowIdx++)
 					{
 						Record db_str = new Record();
-						db_str.Group = sheet.GetRow(rowIdx).GetCell(0)?.ToString() ?? "";
+						db_str.Group = sheet.GetRow(rowIdx).GetCell(2)?.ToString() ?? "";
 						db_str.Lesson = sheet.GetRow(rowIdx).GetCell(1)?.ToString() ?? "";
-						db_str.Name = sheet.GetRow(rowIdx).GetCell(2)?.ToString() ?? "";
-						IRow row = sheet.GetRow(rowIdx);
-						int rows = Int32.Parse(sheet.GetRow(rowIdx).PhysicalNumberOfCells.ToString());
-						if (row != null)
-						{
-							// Создаем строку для DataGridView
-							DataGridViewRow dataGridViewRow = new DataGridViewRow();
-
-							for (int i = 3; i < rows; i++)
-							{
-								db_str.Date = sheet.GetRow(0).Cells[i].ToString();
-								if (row.Cells[i].ToString() == "н")
-									db_str.Miss = 1;
-								else
-									db_str.Mark = int.TryParse(row.Cells[i].ToString(), out int mark) ? mark : 0; ;
-								insert_mark(db_str);
-							}
-						}
+						db_str.Name = sheet.GetRow(rowIdx).GetCell(0)?.ToString() ?? "";
+						db_str.Date = sheet.GetRow(rowIdx).GetCell(3)?.ToString() ?? "";
+						db_str.Mark = sheet.GetRow(rowIdx).GetCell(4)?.ToString() ?? "";
+						insert_mark(db_str);
 					}
 				}
 			}
@@ -368,6 +352,8 @@ namespace TeamLogbook
 			dg.Columns.Add("Группа", "Группа");
 			dg.Columns.Add("Предмет", "Предмет");
 			dg.Columns.Add("Учащийся", "Учащийся");
+			dg.Columns.Add("Дата", "Дата");
+			dg.Columns.Add("Оценка", "Оценка");
 
 			openConnection();
 
@@ -385,19 +371,11 @@ namespace TeamLogbook
 			OleDbDataReader reader = dbCmd.ExecuteReader();
 			while (reader.Read())
 			{
-				string group = reader["Group"].ToString();
-				string lesson = reader["Lesson"].ToString();
 				string student = reader["Student"].ToString();
+				string lesson = reader["Lesson"].ToString();
+				string group = reader["Group"].ToString();
 				string date = reader["MarkDate"].ToString();
 				string mark = reader["Mark"].ToString();
-				string miss = reader["Miss"].ToString();
-
-				// Проверяем, существует ли столбец с указанной датой
-				if (!dg.Columns.Contains(date))
-				{
-					// Если столбца нет, создаем его
-					dg.Columns.Add(date, date);
-				}
 
 				DataGridViewRow existingRow = null;
 
@@ -406,9 +384,11 @@ namespace TeamLogbook
 				{
 					DataGridViewRow newRow = new DataGridViewRow();
 					newRow.CreateCells(dg);
-					newRow.Cells[0].Value = group;
-					newRow.Cells[1].Value = lesson;
-					newRow.Cells[2].Value = student;
+					newRow.Cells[0].Value = student;
+					newRow.Cells[1].Value = group;
+					newRow.Cells[2].Value = lesson;
+					newRow.Cells[3].Value = date;
+					newRow.Cells[4].Value = mark;
 					existingRow = newRow;
 					dg.Rows.Add(existingRow);
 				}

@@ -30,7 +30,7 @@ namespace TeamLogbook
 			using (OleDbConnection connection = new OleDbConnection(db_controller.connectionString))
 			{
 				connection.Open();
-				using (OleDbCommand cmd = new OleDbCommand("SELECT DISTINCT [Student], [Lesson], [MarkDate], [Mark], [Miss], [Group] FROM Marks", connection))
+				using (OleDbCommand cmd = new OleDbCommand("SELECT DISTINCT [Student], [Lesson], [Group], [MarkDate], [Mark]  FROM Marks", connection))
 				{
 					using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(cmd))
 					{
