@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Data.OleDb;
 using System.Windows.Forms;
 
 namespace TeamLogbook
@@ -21,39 +17,42 @@ namespace TeamLogbook
 		private void Log_Load(object sender, EventArgs e)
 		{
 			DBController db_controller = new DBController();
-			string path = db_controller.get_value_from_db("CurrentFile");
+			DataSet ds = new DataSet();
 
-			if (path.Length > 0)
+			db_controller.openConnection();
+
+			using (OleDbConnection connection = new OleDbConnection(db_controller.connectionString))
 			{
-				FileManager fileManager = new FileManager(path);
-				dataGridView.Show();
-				try
+				connection.Open();
+				using (OleDbCommand cmd = new OleDbCommand("SELECT DISTINCT [Student], [Lesson], [Group], [MarkDate], [Mark]  FROM Marks", connection))
 				{
-					fileManager.read_file(dataGridView);
+					using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(cmd))
+					{
+						dataAdapter.Fill(ds);
+						dataGridView.DataSource = ds.Tables[0];
+					}
 				}
-				catch (System.IO.IOException){
-					MessageBox.Show("Убедитесь, что файл не открыт в другой программе", "Предупреждение", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				} 
 			}
-			else dataGridView.Hide();
+
+			db_controller.closeConnection();
 		}
 
-		private void btn_add_col_Click(object sender, EventArgs e)
+		private void btn_top_Click(object sender, EventArgs e)
 		{
-			DateTime now = DateTime.Now;
-			string date = now.Day.ToString() + "." + now.Month.ToString() + "." + now.Year.ToString();
-			dataGridView.Columns.Add(date, date);
-		}
-
-		private void btn_delete_col_Click(object sender, EventArgs e)
-		{
-			DialogResult result = MessageBox.Show("Вы действительно хотите удалить столбец", "Предупреждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-			if (result == DialogResult.OK)
+			if (dataGridView.RowCount > 0)
 			{
-				if (dataGridView.Columns.Count > 0)
-					dataGridView.Columns.RemoveAt(dataGridView.Columns.Count - 1);
-				else
-					MessageBox.Show("Больше удалять нечего", "Уведомление", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+				dataGridView.FirstDisplayedScrollingRowIndex = 0;
+				dataGridView.Rows[0].Selected = true;
+			}
+		}
+
+		private void btn_bottom_Click(object sender, EventArgs e)
+		{
+			if (dataGridView.RowCount > 0)
+			{
+				int lastIndex = dataGridView.RowCount - 1;
+				dataGridView.FirstDisplayedScrollingRowIndex = lastIndex;
+				dataGridView.Rows[lastIndex].Selected = true;
 			}
 		}
 	}

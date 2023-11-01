@@ -1,9 +1,6 @@
-﻿using NPOI.SS.UserModel;
-using System;
+﻿using System;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Collections.Generic;
@@ -41,17 +38,20 @@ namespace TeamLogbook
 
 		private void load_filters()
 		{
-			string[] students = db_controller.get_values_from_db("Student", "Marks");
-			for (int i = 0; i < students.Length; i++)
-			{
-				student_fl.Items.Add(students[i]);
-			}
 			string[] groups = db_controller.get_values_from_db("Group", "Marks");
+			string[] students = db_controller.get_values_from_db("Student", "Marks");
+			string[] lessons = db_controller.get_values_from_db("Lesson", "Marks");
+
 			for (int i = 0; i < groups.Length; i++)
 			{
 				group_fl.Items.Add(groups[i]);
 			}
-			string[] lessons = db_controller.get_values_from_db("Lesson", "Marks");
+
+			for (int i = 0; i < students.Length; i++)
+			{
+				student_fl.Items.Add(students[i]);
+			}
+
 			for (int i = 0; i < lessons.Length; i++)
 			{
 				subject_fl.Items.Add(lessons[i]);
@@ -69,11 +69,11 @@ namespace TeamLogbook
 			int interval = Int32.Parse(db_controller.get_value_from_db("Range"));
 			if (interval > 0)
 			{
-				System.Timers.Timer timer = new System.Timers.Timer(); // Используйте полное имя класса
+				System.Timers.Timer timer = new System.Timers.Timer();
 
 				timer.Interval = interval * 60 * 1000; // Установка интервала в миллисекундах
 				timer.Elapsed += autosave;
-				timer.Start(); // Обратите внимание, что "Start" с заглавной буквы
+				timer.Start(); 
 			}
 		}
 
@@ -172,6 +172,10 @@ namespace TeamLogbook
 
 				db_controller.update_config_value(filename, "CurrentFile");
 
+				MessageBox.Show("Программа начала загружать файл", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				db_controller.save();
+
+
 				if (form_panel.Controls[0].Text == "Log")
 				{
 					DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
@@ -263,15 +267,30 @@ namespace TeamLogbook
 			string group = group_fl.Text;
 			string subject = subject_fl.Text;
 
-			if (student == "Учащийся")
-				student = "[Group]=@gr AND [Lesson]=@ls";
-			if (group == "Группа")
-				group = "[Student]=@st AND [Lesson]=@ls";
-			if (subject == "Предмет")
-				subject = "[Group]=@gr AND [Student]=@st";
-
 			DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
-			db_controller.apply_filters(dgv, new string[] { group, subject, student });
+
+			BindingSource bindingSource = new BindingSource();
+			bindingSource.DataSource = dgv.DataSource; // Используйте исходный источник данных
+			dgv.DataSource = bindingSource;
+
+				List<string> conditions = new List<string>();
+
+				if (student != "Учащийся")
+					conditions.Add("Student=\'" + student + "\'");
+
+				if (group != "Группа")
+					conditions.Add("Group=\'" + group + "\'");
+
+				if (subject != "Предмет")
+					conditions.Add("Lesson=\'" + subject + "\'");
+
+				string condition = string.Join(" AND ", conditions);
+
+				if (!string.IsNullOrEmpty(condition))
+					bindingSource.Filter = condition;
+				else
+					bindingSource.Filter = "";
 		}
+
 	}
 }

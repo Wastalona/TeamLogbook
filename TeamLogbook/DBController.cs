@@ -1,13 +1,9 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
-using MathNet.Numerics.Distributions;
-using MySqlX.XDevAPI.Common;
-using NPOI.SS.UserModel;
+﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -29,6 +25,11 @@ namespace TeamLogbook
 				byte[] hashedBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
 				return Convert.ToBase64String(hashedBytes);
 			}
+		}
+
+		public string connectionString
+		{
+			get { return connectString; }
 		}
 
 		public void openConnection()
@@ -230,14 +231,13 @@ namespace TeamLogbook
 				if (count == 0)
 				{
 					// Если совпадающих записей нет, выполняем вставку
-					string insertQuery = "INSERT INTO Marks ([Student], [Lesson], [MarkDate], [Mark], [Miss], [Group]) VALUES (@Student, @Lesson, @MarkDate, @Mark, @Miss, @Group);";
+					string insertQuery = "INSERT INTO Marks ([Student], [Lesson], [Group], [MarkDate], [Mark]) VALUES (@Student, @Lesson, @Group, @MarkDate, @Mark);";
 					OleDbCommand dbCmd = new OleDbCommand(insertQuery, myConnection);
 					dbCmd.Parameters.AddWithValue("@Student", record.Name);
 					dbCmd.Parameters.AddWithValue("@Lesson", record.Lesson);
+					dbCmd.Parameters.AddWithValue("@Group", record.Group);
 					dbCmd.Parameters.AddWithValue("@MarkDate", record.Date);
 					dbCmd.Parameters.AddWithValue("@Mark", record.Mark);
-					dbCmd.Parameters.AddWithValue("@Miss", record.Miss);
-					dbCmd.Parameters.AddWithValue("@Group", record.Group);
 					
 					dbCmd.ExecuteNonQuery();
 				}
@@ -282,8 +282,7 @@ namespace TeamLogbook
 			openConnection();
 
 			string[] result = null;
-			try
-			{
+			try {
 				OleDbCommand dbCmd = new OleDbCommand("SELECT DISTINCT [" + column + "] FROM [" + table + "]", myConnection);
 				List<string> data = new List<string>();
 
@@ -326,32 +325,18 @@ namespace TeamLogbook
 					for (int rowIdx = 1; rowIdx <= sheet.LastRowNum; rowIdx++)
 					{
 						Record db_str = new Record();
-						db_str.Group = sheet.GetRow(rowIdx).GetCell(0)?.ToString() ?? "";
+						db_str.Group = sheet.GetRow(rowIdx).GetCell(2)?.ToString() ?? "";
 						db_str.Lesson = sheet.GetRow(rowIdx).GetCell(1)?.ToString() ?? "";
-						db_str.Name = sheet.GetRow(rowIdx).GetCell(2)?.ToString() ?? "";
-						IRow row = sheet.GetRow(rowIdx);
-						int rows = Int32.Parse(sheet.GetRow(rowIdx).PhysicalNumberOfCells.ToString());
-						if (row != null)
-						{
-							// Создаем строку для DataGridView
-							DataGridViewRow dataGridViewRow = new DataGridViewRow();
-
-							for (int i = 3; i < rows; i++)
-							{
-								db_str.Date = sheet.GetRow(0).Cells[i].ToString();
-								if (row.Cells[i].ToString() == "н")
-									db_str.Miss = 1;
-								else
-									db_str.Mark = int.TryParse(row.Cells[i].ToString(), out int mark) ? mark : 0; ;
-								insert_mark(db_str);
-							}
-						}
+						db_str.Name = sheet.GetRow(rowIdx).GetCell(0)?.ToString() ?? "";
+						db_str.Date = sheet.GetRow(rowIdx).GetCell(3)?.ToString() ?? "";
+						db_str.Mark = Int32.Parse(sheet.GetRow(rowIdx).GetCell(4)?.ToString() ?? "");
+						insert_mark(db_str);
 					}
 				}
 			}
 		}
 
-		public void apply_filters(DataGridView dg, string[] filters)
+		public void apply_filters(DataGridView dg, string query, List<OleDbParameter> parameters, bool ans)
 		{
 			dg.Rows.Clear();
 			dg.Columns.Clear();
@@ -360,52 +345,64 @@ namespace TeamLogbook
 			dg.Columns.Add("Группа", "Группа");
 			dg.Columns.Add("Предмет", "Предмет");
 			dg.Columns.Add("Учащийся", "Учащийся");
+			dg.Columns.Add("Дата", "Дата");
+			dg.Columns.Add("Оценка", "Оценка");
 
 			openConnection();
 
-			try
+			//try
+			//{
+			OleDbCommand dbCmd = new OleDbCommand(query, myConnection);
+			if (ans)
 			{
-				OleDbCommand dbCmd = new OleDbCommand("SELECT * FROM Marks WHERE [Group]=@gr AND [Student]=@st AND [Lesson]=@ls", myConnection);
-				dbCmd.Parameters.AddWithValue("@gr", filters[0]);
-				dbCmd.Parameters.AddWithValue("@st", filters[2]);
-				dbCmd.Parameters.AddWithValue("@ls", filters[1]);
+				dbCmd.Parameters.Add(parameters[0]);
+				dbCmd.Parameters.Add(parameters[1]);
+				dbCmd.Parameters.Add(parameters[2]);
+			}
 
-				OleDbDataReader reader = dbCmd.ExecuteReader();
-				while (reader.Read())
+
+			OleDbDataReader reader = dbCmd.ExecuteReader();
+			while (reader.Read())
+			{
+				string student = reader["Student"].ToString();
+				string lesson = reader["Lesson"].ToString();
+				string group = reader["Group"].ToString();
+				string date = reader["MarkDate"].ToString();
+				string mark = reader["Mark"].ToString();
+
+				DataGridViewRow existingRow = null;
+
+				// Если строка не найдена, создаем новую
+				if (existingRow == null)
 				{
-					string group = reader["Group"].ToString();
-					string lesson = reader["Lesson"].ToString();
-					string student = reader["Student"].ToString();
-					string date = reader["MarkDate"].ToString();
-					string mark = reader["Mark"].ToString();
-					string miss = reader["Miss"].ToString();
-
-					// Если столбец с такой датой еще не существует, добавляем его
-					if (!dg.Columns.Contains(date))
-					{
-						dg.Columns.Add(date, date);
-					}
-
-					// Добавляем строку с данными в DataGridView
-					DataGridViewRow row = new DataGridViewRow();
-					row.CreateCells(dg);
-					row.Cells[0].Value = group;
-					row.Cells[1].Value = lesson;
-					row.Cells[2].Value = student;
-					row.Cells[date].Value = mark;
-					dg.Rows.Add(row);
+					DataGridViewRow newRow = new DataGridViewRow();
+					newRow.CreateCells(dg);
+					newRow.Cells[0].Value = student;
+					newRow.Cells[1].Value = group;
+					newRow.Cells[2].Value = lesson;
+					newRow.Cells[3].Value = date;
+					newRow.Cells[4].Value = mark;
+					existingRow = newRow;
+					dg.Rows.Add(existingRow);
 				}
 
-				reader.Close();
+				// Обновляем ячейку с оценкой в соответствии с датой
+				existingRow.Cells[date].Value = mark;
 			}
-			catch (Exception ex)
-			{
-				MessageBox.Show("Произошла ошибка при применении фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
-			}
-			finally
-			{
-				closeConnection();
-			}
+
+
+			reader.Close();
 		}
+
+		/*catch (Exception ex)
+		{
+			MessageBox.Show("Произошла ошибка при применении фильтров: " + ex.Message, "Ошибка загрузки", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+		finally
+		{
+			closeConnection();
+		}*/
 	}
+
 }
+//}

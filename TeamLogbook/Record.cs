@@ -13,7 +13,7 @@ namespace TeamLogbook
 		Класс для создания записи об учащемся
 		*/
 		string group; string name; string lesson;
-		string date; int mark; int miss = 0;
+		string date; int mark;
 		public string Name
 		{
 			get { return name; }
@@ -35,11 +35,6 @@ namespace TeamLogbook
 			get { return mark; }
 			set { mark = value; }
 		}
-		public int Miss
-		{
-			get { return miss; }
-			set { miss = value; }
-		}
 
 		public string Group
 		{
@@ -49,7 +44,7 @@ namespace TeamLogbook
 
 		public void print()
 		{
-			MessageBox.Show(group + " " + name + " " + lesson + " " + date.ToString() + " " + mark.ToString() + " " + miss.ToString());
+			MessageBox.Show(group + " " + name + " " + lesson + " " + date + " " + mark.ToString());
 		}
 	}
 }

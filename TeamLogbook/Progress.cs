@@ -1,12 +1,6 @@
-﻿using DocumentFormat.OpenXml.Office2013.Drawing.ChartStyle;
-using NPOI.OpenXmlFormats.Dml.Chart;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Data.OleDb;
 using System.Windows.Forms;
 
 namespace TeamLogbook
@@ -20,47 +14,27 @@ namespace TeamLogbook
 
 		private void Progress_Load(object sender, EventArgs e)
 		{
-			dataGridView.Hide();
 			DBController db_controller = new DBController();
-			string path = db_controller.get_value_from_db("CurrentFile");
+			DataSet ds = new DataSet();
 
-			FileManager fileManager = new FileManager(path);
-			fileManager.read_file(dataGridView, "", "", "");
+			db_controller.openConnection();
 
-			double mark = 0; int amount = 0;
-
-			// Перебор строк и столбцов DataGridView
-			for (int row = 0; row < dataGridView.Rows.Count; row++)
+			using (OleDbConnection connection = new OleDbConnection(db_controller.connectionString))
 			{
-				for (int col = 0; col < dataGridView.Columns.Count; col++)
+				connection.Open();
+				string query = "SELECT [Student], [Lesson], [Group], AVG([Mark]) AS AverageMark FROM Marks GROUP BY [Student], [Lesson], [Group]";
+				using (OleDbCommand cmd = new OleDbCommand(query, connection))
 				{
-					int dateIndex = col + 3;
-					// Проверка на null перед получением значения
-					if (dataGridView.Rows[row].Cells[col].Value != null)
+					using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(cmd))
 					{
-						string value = dataGridView.Rows[row].Cells[col].Value.ToString(); // значение
-						if (value != "н")
-						{
-							mark++;
-							amount++;
-						}
+						dataAdapter.Fill(ds);
+						dataGridView.DataSource = ds.Tables[0];
 					}
 				}
-				mark = Math.Round(mark/amount, 2);
 			}
 
-			// Перебор и удаление лишних столбцов DataGridView
-			/*int end = dataGridView.Columns.Count;
-			for (int i = 3; i < end; i++)
-			{
-				dataGridView.Columns.RemoveAt(3);
-			}*/
+			db_controller.closeConnection();
 
-			// Добавляем столбец "Количество пропусков"
-			dataGridView.Columns.Add("Количество пропусков", "Количество пропусков");
-
-			// Заполняем столбец данными
-			MessageBox.Show(mark.ToString());
 		}
 	}
 }

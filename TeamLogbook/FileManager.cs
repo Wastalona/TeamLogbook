@@ -24,7 +24,7 @@ namespace TeamLogbook
 			filePath = path;
 		}
 
-		public void read_file(DataGridView dataGridView, string group="", string subject="", string name="")
+		public void read_file(DataGridView dataGridView)
 		{
 			// Очищаем dataGridView
 			dataGridView.Rows.Clear();
@@ -70,6 +70,11 @@ namespace TeamLogbook
 			}
 		}
 
+
+		public void rw_db()
+		{
+
+		}
 
 		public string[] getFileInfo()
 		{
