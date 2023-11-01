@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Data.OleDb;
-using System.Data.SqlClient;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace TeamLogbook
@@ -41,26 +35,24 @@ namespace TeamLogbook
 			}
 
 			db_controller.closeConnection();
-
-			string path = db_controller.get_value_from_db("CurrentFile");
 		}
 
-		private void btn_add_col_Click(object sender, EventArgs e)
+		private void btn_top_Click(object sender, EventArgs e)
 		{
-			DateTime now = DateTime.Now;
-			string date = now.Day.ToString() + "." + now.Month.ToString() + "." + now.Year.ToString();
-			dataGridView.Columns.Add(date, date);
-		}
-
-		private void btn_delete_col_Click(object sender, EventArgs e)
-		{
-			DialogResult result = MessageBox.Show("Вы действительно хотите удалить столбец", "Предупреждение", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-			if (result == DialogResult.OK)
+			if (dataGridView.RowCount > 0)
 			{
-				if (dataGridView.Columns.Count > 0)
-					dataGridView.Columns.RemoveAt(dataGridView.Columns.Count - 1);
-				else
-					MessageBox.Show("Больше удалять нечего", "Уведомление", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+				dataGridView.FirstDisplayedScrollingRowIndex = 0;
+				dataGridView.Rows[0].Selected = true;
+			}
+		}
+
+		private void btn_bottom_Click(object sender, EventArgs e)
+		{
+			if (dataGridView.RowCount > 0)
+			{
+				int lastIndex = dataGridView.RowCount - 1;
+				dataGridView.FirstDisplayedScrollingRowIndex = lastIndex;
+				dataGridView.Rows[lastIndex].Selected = true;
 			}
 		}
 	}

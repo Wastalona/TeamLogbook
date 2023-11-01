@@ -1,15 +1,9 @@
-﻿using NPOI.SS.UserModel;
-using System;
+﻿using System;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Timers;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Data.OleDb;
-using DocumentFormat.OpenXml.Presentation;
-using DocumentFormat.OpenXml.Spreadsheet;
 
 namespace TeamLogbook
 {
@@ -75,11 +69,11 @@ namespace TeamLogbook
 			int interval = Int32.Parse(db_controller.get_value_from_db("Range"));
 			if (interval > 0)
 			{
-				System.Timers.Timer timer = new System.Timers.Timer(); // Используйте полное имя класса
+				System.Timers.Timer timer = new System.Timers.Timer();
 
 				timer.Interval = interval * 60 * 1000; // Установка интервала в миллисекундах
 				timer.Elapsed += autosave;
-				timer.Start(); // Обратите внимание, что "Start" с заглавной буквы
+				timer.Start(); 
 			}
 		}
 
@@ -279,23 +273,23 @@ namespace TeamLogbook
 			bindingSource.DataSource = dgv.DataSource; // Используйте исходный источник данных
 			dgv.DataSource = bindingSource;
 
-			List<string> conditions = new List<string>();
+				List<string> conditions = new List<string>();
 
-			if (student != "Учащийся")
-				conditions.Add("Student=\'" + student + "\'");
+				if (student != "Учащийся")
+					conditions.Add("Student=\'" + student + "\'");
 
-			if (group != "Группа")
-				conditions.Add("Group=\'" + group + "\'");
+				if (group != "Группа")
+					conditions.Add("Group=\'" + group + "\'");
 
-			if (subject != "Предмет")
-				conditions.Add("Lesson=\'" + subject + "\'");
+				if (subject != "Предмет")
+					conditions.Add("Lesson=\'" + subject + "\'");
 
-			string condition = string.Join(" AND ", conditions);
+				string condition = string.Join(" AND ", conditions);
 
-			if (!string.IsNullOrEmpty(condition))
-				bindingSource.Filter = condition;
-			else
-				bindingSource.Filter = "";
+				if (!string.IsNullOrEmpty(condition))
+					bindingSource.Filter = condition;
+				else
+					bindingSource.Filter = "";
 		}
 
 	}

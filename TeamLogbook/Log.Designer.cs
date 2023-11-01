@@ -29,8 +29,8 @@
 		private void InitializeComponent()
 		{
 			this.dataGridView = new System.Windows.Forms.DataGridView();
-			this.btn_delete_col = new System.Windows.Forms.Button();
-			this.btn_add_col = new System.Windows.Forms.Button();
+			this.btn_top = new System.Windows.Forms.Button();
+			this.btn_bottom = new System.Windows.Forms.Button();
 			this.panel1 = new System.Windows.Forms.Panel();
 			((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
 			this.panel1.SuspendLayout();
@@ -47,38 +47,38 @@
 			this.dataGridView.Size = new System.Drawing.Size(963, 449);
 			this.dataGridView.TabIndex = 5;
 			// 
-			// btn_delete_col
+			// btn_top
 			// 
-			this.btn_delete_col.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.btn_delete_col.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btn_delete_col.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.btn_delete_col.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_delete_col.Location = new System.Drawing.Point(623, 0);
-			this.btn_delete_col.Name = "btn_delete_col";
-			this.btn_delete_col.Size = new System.Drawing.Size(158, 40);
-			this.btn_delete_col.TabIndex = 7;
-			this.btn_delete_col.Text = "Удалить столбец";
-			this.btn_delete_col.UseVisualStyleBackColor = false;
-			this.btn_delete_col.Click += new System.EventHandler(this.btn_delete_col_Click);
+			this.btn_top.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.btn_top.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_top.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btn_top.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.btn_top.Location = new System.Drawing.Point(623, 0);
+			this.btn_top.Name = "btn_top";
+			this.btn_top.Size = new System.Drawing.Size(158, 40);
+			this.btn_top.TabIndex = 7;
+			this.btn_top.Text = "Перейти к верху";
+			this.btn_top.UseVisualStyleBackColor = false;
+			this.btn_top.Click += new System.EventHandler(this.btn_top_Click);
 			// 
-			// btn_add_col
+			// btn_bottom
 			// 
-			this.btn_add_col.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
-			this.btn_add_col.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-			this.btn_add_col.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.btn_add_col.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
-			this.btn_add_col.Location = new System.Drawing.Point(787, 0);
-			this.btn_add_col.Name = "btn_add_col";
-			this.btn_add_col.Size = new System.Drawing.Size(173, 40);
-			this.btn_add_col.TabIndex = 6;
-			this.btn_add_col.Text = "Добавить столбец";
-			this.btn_add_col.UseVisualStyleBackColor = false;
-			this.btn_add_col.Click += new System.EventHandler(this.btn_add_col_Click);
+			this.btn_bottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(181)))), ((int)(((byte)(170)))), ((int)(((byte)(158)))));
+			this.btn_bottom.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+			this.btn_bottom.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.btn_bottom.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(230)))), ((int)(((byte)(93)))));
+			this.btn_bottom.Location = new System.Drawing.Point(787, 0);
+			this.btn_bottom.Name = "btn_bottom";
+			this.btn_bottom.Size = new System.Drawing.Size(173, 40);
+			this.btn_bottom.TabIndex = 6;
+			this.btn_bottom.Text = "Перейти в конец";
+			this.btn_bottom.UseVisualStyleBackColor = false;
+			this.btn_bottom.Click += new System.EventHandler(this.btn_bottom_Click);
 			// 
 			// panel1
 			// 
-			this.panel1.Controls.Add(this.btn_add_col);
-			this.panel1.Controls.Add(this.btn_delete_col);
+			this.panel1.Controls.Add(this.btn_bottom);
+			this.panel1.Controls.Add(this.btn_top);
 			this.panel1.Location = new System.Drawing.Point(12, 467);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(963, 40);
@@ -106,8 +106,8 @@
 		#endregion
 
 		private System.Windows.Forms.DataGridView dataGridView;
-		private System.Windows.Forms.Button btn_delete_col;
-		private System.Windows.Forms.Button btn_add_col;
+		private System.Windows.Forms.Button btn_top;
+		private System.Windows.Forms.Button btn_bottom;
 		private System.Windows.Forms.Panel panel1;
 	}
 }

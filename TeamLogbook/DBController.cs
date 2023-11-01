@@ -1,16 +1,9 @@
-﻿using DocumentFormat.OpenXml.Office2013.Excel;
-using DocumentFormat.OpenXml.Spreadsheet;
-using MathNet.Numerics.Distributions;
-using MySqlX.XDevAPI.Common;
-using NPOI.SS.UserModel;
+﻿using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
-using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows.Forms;
@@ -336,7 +329,7 @@ namespace TeamLogbook
 						db_str.Lesson = sheet.GetRow(rowIdx).GetCell(1)?.ToString() ?? "";
 						db_str.Name = sheet.GetRow(rowIdx).GetCell(0)?.ToString() ?? "";
 						db_str.Date = sheet.GetRow(rowIdx).GetCell(3)?.ToString() ?? "";
-						db_str.Mark = sheet.GetRow(rowIdx).GetCell(4)?.ToString() ?? "";
+						db_str.Mark = Int32.Parse(sheet.GetRow(rowIdx).GetCell(4)?.ToString() ?? "");
 						insert_mark(db_str);
 					}
 				}
