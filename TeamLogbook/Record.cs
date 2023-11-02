@@ -13,7 +13,7 @@ namespace TeamLogbook
 		Класс для создания записи об учащемся
 		*/
 		string group; string name; string lesson;
-		string date; int mark;
+		DateTime date; int mark;
 		public string Name
 		{
 			get { return name; }
@@ -25,7 +25,7 @@ namespace TeamLogbook
 			get { return lesson; }
 			set { lesson = value; }
 		}
-		public string Date
+		public DateTime Date
 		{
 			get { return date; }
 			set { date = value; }

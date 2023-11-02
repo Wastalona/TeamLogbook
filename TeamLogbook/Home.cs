@@ -173,33 +173,39 @@ namespace TeamLogbook
 				db_controller.update_config_value(filename, "CurrentFile");
 
 				MessageBox.Show("Программа начала загружать файл", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				db_controller.save();
+				upload_db();
 
-
-				if (form_panel.Controls[0].Text == "Log")
-				{
-					DataGridView dgv = (DataGridView)form_panel.Controls[0].Controls["dataGridView"];
-					dgv.Show();
-					fileManager.read_file(dgv);
-				}
-				else if (form_panel.Controls[0].Text == "Main")
-				{
-					Label cur_file = (Label)form_panel.Controls[0].Controls["lb_curr_file"];
-					Label last_mod = (Label)form_panel.Controls[0].Controls["lb_last_edit"];
-					Label info = (Label)form_panel.Controls[0].Controls["info_lb"];
-					FileManager file_manager = new FileManager(filename);
-					string[] fileinfo = file_manager.getFileInfo();
-					cur_file.Text = "Текущий файл: " + fileinfo[0];
-					last_mod.Text = "Последнее изменение: " + fileinfo[1];
-					last_mod.Show();
-					cur_file.Show();
-					info.Hide();
-
-					MessageBox.Show("Файл загружен и отображён на вкладке журнал", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-				}
+				Label cur_file = (Label)form_panel.Controls[0].Controls["lb_curr_file"];
+				Label last_mod = (Label)form_panel.Controls[0].Controls["lb_last_edit"];
+				Label info = (Label)form_panel.Controls[0].Controls["info_lb"];
+				FileManager file_manager = new FileManager(filename);
+				string[] fileinfo = file_manager.getFileInfo();
+				cur_file.Text = "Текущий файл: " + fileinfo[0];
+				last_mod.Text = "Последнее изменение: " + fileinfo[1];
+				last_mod.Show();
+				cur_file.Show();
+				info.Hide();
 			}
 			else
 				MessageBox.Show("Файл имеет неверный формат", "Ошибка загурзки файла", MessageBoxButtons.OK, MessageBoxIcon.Error);
+		}
+
+		// загрузка
+		private async void upload_db()
+		{
+			lb_save.Text = "Загрузка...";
+			lb_save.Show();
+			DBController dBController = new DBController();
+			await Task.Run(() => dBController.save());// Вызываем сохранение в фоновом потоке
+
+			this.Invoke((MethodInvoker)delegate
+			{
+				// Код для обновления UI
+				lb_save.Text = "Сохранено";
+				lb_save.Hide();
+				lb_save.Text = "Сохранение...";
+			});
+			MessageBox.Show("Файл загружен", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		}
 
 		// сохранения

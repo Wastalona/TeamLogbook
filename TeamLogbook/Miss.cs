@@ -23,7 +23,7 @@ namespace TeamLogbook
 			using (OleDbConnection connection = new OleDbConnection(db_controller.connectionString))
 			{
 				connection.Open();
-				string query = "SELECT [Student], [Lesson], [Group], ROUND(AVG([Mark]), 2) AS AverageMark FROM Marks GROUP BY [Student], [Lesson], [Group]";
+				string query = "SELECT DISTINCT [Student], [Lesson], [Group], COUNT([Mark]) AS Miss FROM Marks WHERE [Mark] = -1 GROUP BY [Student], [Lesson], [Group]";
 				using (OleDbCommand cmd = new OleDbCommand(query, connection))
 				{
 					using (OleDbDataAdapter dataAdapter = new OleDbDataAdapter(cmd))
@@ -34,6 +34,7 @@ namespace TeamLogbook
 				}
 			}
 			db_controller.closeConnection();
+
 		}
 	}
 }

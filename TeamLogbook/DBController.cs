@@ -3,6 +3,7 @@ using NPOI.XSSF.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Data.OleDb;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
@@ -328,7 +329,12 @@ namespace TeamLogbook
 						db_str.Group = sheet.GetRow(rowIdx).GetCell(2)?.ToString() ?? "";
 						db_str.Lesson = sheet.GetRow(rowIdx).GetCell(1)?.ToString() ?? "";
 						db_str.Name = sheet.GetRow(rowIdx).GetCell(0)?.ToString() ?? "";
-						db_str.Date = sheet.GetRow(rowIdx).GetCell(3)?.ToString() ?? "";
+						//db_str.Date = sheet.GetRow(rowIdx).GetCell(3)?.ToString() ?? "";
+						string dateStr = sheet.GetRow(rowIdx).GetCell(3)?.ToString() ?? "";
+						DateTime parsedDate;
+
+						if (DateTime.TryParseExact(dateStr, "dd-MMM-yyyy", null, System.Globalization.DateTimeStyles.None, out parsedDate))
+							db_str.Date = parsedDate;
 						db_str.Mark = Int32.Parse(sheet.GetRow(rowIdx).GetCell(4)?.ToString() ?? "");
 						insert_mark(db_str);
 					}

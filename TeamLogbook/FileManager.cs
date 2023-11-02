@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel; // для формата XLSX
-using System.IO;
 using System.Windows.Forms;
 using ClosedXML.Excel;
-using System.Reflection;
-using DocumentFormat.OpenXml.Spreadsheet;
 
 
 namespace TeamLogbook
@@ -68,12 +62,6 @@ namespace TeamLogbook
 					}
 				}
 			}
-		}
-
-
-		public void rw_db()
-		{
-
 		}
 
 		public string[] getFileInfo()
