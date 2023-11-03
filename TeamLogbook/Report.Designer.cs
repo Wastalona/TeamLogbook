@@ -28,48 +28,51 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-			System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-			System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-			this.chart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
-			((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
+			this.pieChart = new LiveCharts.WinForms.PieChart();
+			this.head_lb = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
-			// chart1
+			// pieChart
 			// 
-			chartArea1.Name = "ChartArea1";
-			this.chart1.ChartAreas.Add(chartArea1);
-			legend1.Name = "Legend1";
-			this.chart1.Legends.Add(legend1);
-			this.chart1.Location = new System.Drawing.Point(133, 57);
-			this.chart1.Name = "chart1";
-			series1.ChartArea = "ChartArea1";
-			series1.Legend = "Legend1";
-			series1.Name = "Series1";
-			this.chart1.Series.Add(series1);
-			this.chart1.Size = new System.Drawing.Size(686, 370);
-			this.chart1.TabIndex = 0;
-			this.chart1.Text = "chart1";
+			this.pieChart.Location = new System.Drawing.Point(12, 12);
+			this.pieChart.Name = "pieChart";
+			this.pieChart.Size = new System.Drawing.Size(963, 394);
+			this.pieChart.TabIndex = 0;
+			this.pieChart.Text = "pieChart1";
+			// 
+			// head_lb
+			// 
+			this.head_lb.AutoSize = true;
+			this.head_lb.BackColor = System.Drawing.Color.Transparent;
+			this.head_lb.Font = new System.Drawing.Font("Cascadia Mono SemiBold", 24F, System.Drawing.FontStyle.Bold);
+			this.head_lb.ForeColor = System.Drawing.Color.Black;
+			this.head_lb.Location = new System.Drawing.Point(358, 452);
+			this.head_lb.Name = "head_lb";
+			this.head_lb.Size = new System.Drawing.Size(285, 43);
+			this.head_lb.TabIndex = 2;
+			this.head_lb.Text = "Отчёт за месяц";
 			// 
 			// Report
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(987, 519);
-			this.Controls.Add(this.chart1);
+			this.Controls.Add(this.head_lb);
+			this.Controls.Add(this.pieChart);
 			this.MaximumSize = new System.Drawing.Size(1003, 558);
 			this.MinimumSize = new System.Drawing.Size(1003, 558);
 			this.Name = "Report";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Report";
 			this.Load += new System.EventHandler(this.Report_Load);
-			((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 
 		#endregion
 
-		private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+		private LiveCharts.WinForms.PieChart pieChart;
+		private System.Windows.Forms.Label head_lb;
 	}
 }

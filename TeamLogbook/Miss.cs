@@ -18,8 +18,6 @@ namespace TeamLogbook
 			DBController db_controller = new DBController();
 			DataSet ds = new DataSet();
 
-			db_controller.openConnection();
-
 			using (OleDbConnection connection = new OleDbConnection(db_controller.connectionString))
 			{
 				connection.Open();
@@ -33,8 +31,6 @@ namespace TeamLogbook
 					}
 				}
 			}
-			db_controller.closeConnection();
-
 		}
 	}
 }

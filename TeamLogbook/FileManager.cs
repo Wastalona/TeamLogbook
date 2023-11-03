@@ -57,7 +57,7 @@ namespace TeamLogbook
 							}
 							// Добавляем созданную строку в DataGridView
 							dataGridView.Rows.Add(dataGridViewRow);
-							
+
 						}
 					}
 				}
@@ -107,5 +107,6 @@ namespace TeamLogbook
 				workbook.SaveAs(filePath);
 			}
 		}
+
 	}
 }
